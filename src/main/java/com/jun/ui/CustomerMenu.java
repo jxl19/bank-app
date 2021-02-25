@@ -1,8 +1,8 @@
 package com.jun.ui;
 
-public class UserMenu implements Menu{
+public class CustomerMenu implements Menu{
 	
-	public UserMenu() {
+	public CustomerMenu() {
 		
 	}
 	
@@ -62,7 +62,7 @@ public class UserMenu implements Menu{
 		} catch (NumberFormatException e) {} 
 		
 		if (account_choice - 1 == ids.length) {
-			UserMenu um = new UserMenu();
+			CustomerMenu um = new CustomerMenu();
 			um.display();
 		}
 		

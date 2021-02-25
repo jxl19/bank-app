@@ -13,17 +13,13 @@ public class LoginDAOImpl implements LoginDAO{
 	public User authenticateUser(String username, String password, Connection con) throws SQLException{
 		User user = null;
 		
-		String sql = "SELECT * FROM bank.person WHERE login_id = (SELECT * FROM bank.login WHERE username =? AND password =?)";
+		String sql = "SELECT * FROM bank.person WHERE login_id = (SELECT login_id FROM bank.login WHERE username =? AND pass =?)";
 		
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, username);
 		pstmt.setString(2, password);
 
-		
-//		private Boolean isAdmin;
-//		private int userId;
-//		private int loginId;
-//		private double balance;
+
 		ResultSet rs = pstmt.executeQuery();
 		if (rs.next()) {
 			Boolean isAdmin = rs.getBoolean("isAdmin");
