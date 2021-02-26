@@ -1,9 +1,18 @@
 package com.jun.ui;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.jun.exceptions.UserNotFoundException;
+import com.jun.services.CustomerService;
+
 public class CustomerMenu implements Menu{
 	
+	public CustomerService customerService;
+	
 	public CustomerMenu() {
-		
+		this.customerService = new CustomerService();
 	}
 	
 	public void display() {
@@ -22,7 +31,13 @@ public class CustomerMenu implements Menu{
 			
 			switch (choice) {
 				case 1: 
+				try {
 					getCustAccount();
+				} catch (UserNotFoundException e) {
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 					break;
 				case 2:
 					Menu.sc.close();
@@ -34,50 +49,47 @@ public class CustomerMenu implements Menu{
 		} while (choice != 2);
 	}
 	
-	private String getUsernameInput() {
-		System.out.println("Enter a username that you would like to lookup: ");
-		String input = Menu.sc.nextLine().trim();
-		
-		return input;
-	}
 	
-	private static void getCustAccount() {
-		//OR THIS COULD JUST BE A SELECTION OF ACCOUNTS... EASIER THAN ENTERING IDS
-		int[] ids = {7777777,8888888,9999999}; //might need to somehow figure out how to get ids in an array
-		int account_choice = 0;
-		int ac = 0;
+	private void getCustAccount() throws UserNotFoundException, SQLException {
+		
+		List<String> ids = new ArrayList<>();
+		ids = customerService.getCustomerCardNumber(MainMenu.loginId);
+//		System.out.println(ids);
+		
+		int choice = 0;
+		String ac;
 		StringBuilder sb = new StringBuilder();
 		sb.append("=== CUSTOMER ACCOUNTS===");
 		sb.append(System.getProperty("line.separator"));
 		sb.append("Select a customer account below");
 		sb.append(System.getProperty("line.separator"));
-		for (int i = 0; i <= ids.length; i++) {
-			if (i < ids.length) sb.append(i+1 + ".) " + ids[i]);
+		for (int i = 0; i <= ids.size(); i++) {
+			if (i < ids.size()) sb.append(i+1 + ".) " + ids.get(i));
 			else sb.append(i+1 + ".) Exit");
 			sb.append(System.getProperty("line.separator"));
 		}
-		System.out.println(sb);
+			System.out.println(sb);
+		
 		try { 
-			account_choice = Integer.parseInt(Menu.sc.nextLine());
+			choice = Integer.parseInt(Menu.sc.nextLine());
 		} catch (NumberFormatException e) {} 
 		
-		if (account_choice - 1 == ids.length) {
-			CustomerMenu um = new CustomerMenu();
-			um.display();
-		}
-		
-		try {
-			ac = ids[account_choice - 1];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println("Invalid selection, try again");
-			getCustAccount();
+		//exit menu
+		if (choice - 1 == ids.size()) {
+			CustomerMenu cm = new CustomerMenu();
+			System.out.println("Exiting..");
+			cm.display();
 		}
 
-		if (ac > 0) {
-			System.out.println(ac);
-			AccountMenu am = new AccountMenu(ac);
+		if (choice < ids.size() & choice != 0) {
+			System.out.println(ids.get(choice - 1));
+			String acc = ids.get(choice - 1);
+			AccountMenu am = new AccountMenu(acc);
 			am.display();
-		} 
+		} else {
+			System.out.println("invalid");
+			this.getCustAccount();
+		}
 
 	}
 }

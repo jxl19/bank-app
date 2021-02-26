@@ -1,56 +1,32 @@
 package com.jun.model;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
 public class Customer {
-	private int customerId;
-	private int userId;
-	private String firstName;
-	private String lastName;
-	private boolean isAdmin;
-	public int getCustomerId() {
-		return customerId;
+	private List<String> cardNo;
+	private int personId;
+	public Customer(List<String> cardNo, int personId) {
+		super();
+		this.cardNo = cardNo;
+		this.personId = personId;
 	}
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
+	public List<String> getCardNo() {
+		return cardNo;
 	}
-	public int getUserId() {
-		return userId;
+	public void setCardNo(List<String> cardNo) {
+		this.cardNo = cardNo;
 	}
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public int getPersonId() {
+		return personId;
 	}
-	public String getFirstName() {
-		return firstName;
-	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	public boolean isAdmin() {
-		return isAdmin;
-	}
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
-	@Override
-	public String toString() {
-		return "Customer [customerId=" + customerId + ", userId=" + userId + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", isAdmin=" + isAdmin + "]";
+	public void setPersonId(int personId) {
+		this.personId = personId;
 	}
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + customerId;
-		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result + (isAdmin ? 1231 : 1237);
-		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + userId;
-		return result;
+		return Objects.hash(cardNo, personId);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -61,24 +37,12 @@ public class Customer {
 		if (getClass() != obj.getClass())
 			return false;
 		Customer other = (Customer) obj;
-		if (customerId != other.customerId)
-			return false;
-		if (firstName == null) {
-			if (other.firstName != null)
-				return false;
-		} else if (!firstName.equals(other.firstName))
-			return false;
-		if (isAdmin != other.isAdmin)
-			return false;
-		if (lastName == null) {
-			if (other.lastName != null)
-				return false;
-		} else if (!lastName.equals(other.lastName))
-			return false;
-		if (userId != other.userId)
-			return false;
-		return true;
+		return Objects.equals(cardNo, other.cardNo) && personId == other.personId;
 	}
+	@Override
+	public String toString() {
+		return "Customer [cardNo=" + cardNo + ", personId=" + personId + "]";
+	} 
 	
 	
 }

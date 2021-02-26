@@ -3,15 +3,17 @@ package com.jun.ui;
 import java.sql.SQLException;
 
 import com.jun.exceptions.UserNotFoundException;
-import com.jun.model.User;
-import com.jun.services.UserService;
+import com.jun.model.Login;
+import com.jun.services.LoginService;
 
 public class MainMenu implements Menu {
 	
-	public UserService userService; 
+	public LoginService loginService; 
+	public static boolean isAdmin;
+	public static int loginId;
 	
 	public MainMenu() {
-		this.userService = new UserService();
+		this.loginService = new LoginService();
 	}
 
 	public void display() {
@@ -20,8 +22,7 @@ public class MainMenu implements Menu {
 	}
 	
 	private void getAccountType() {
-		boolean isAdmin = true;
-		User user = null;
+		Login login = null;
 		
 		System.out.println("Please Enter your username: ");
 		String un = Menu.sc.nextLine();
@@ -29,16 +30,17 @@ public class MainMenu implements Menu {
 		String pw = Menu.sc.nextLine();
 		
 		try {
-			user = userService.authenticateUser(un, pw);
+			login = loginService.authenticateUser(un, pw);
 		} catch (SQLException | UserNotFoundException e) {
 //			System.out.println(e.getClass().getSimpleName() + " " + e.getMessage());
 			System.out.println(e.getMessage());
 		}
 		
-		if (user == null) {
+		if (login == null) {
 			this.getAccountType();
 		} else {
-			isAdmin = user.getIsAdmin();
+			isAdmin = login.isAdmin();
+			loginId = login.getLoginId();
 			EmployeeMenu em = new EmployeeMenu();
 			CustomerMenu um = new CustomerMenu();
 			if (isAdmin) {

@@ -2,9 +2,9 @@ package com.jun.ui;
 
 public class AccountMenu implements Menu{
 	
-	private int id;
+	private String id;
 
-	public AccountMenu(int id) {
+	public AccountMenu(String id) {
 		this.id = id;
 	}
 	
@@ -34,8 +34,11 @@ public class AccountMenu implements Menu{
 				case 3: 
 					System.out.println("Transfer menu");
 					break;
+				case 4: 
+					break;
 				default:
 					System.out.println("Invalid option. Please choose again");
+					break;
 			}
 			
 		} while (choice != 4);

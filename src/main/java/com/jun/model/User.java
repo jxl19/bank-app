@@ -1,5 +1,6 @@
 package com.jun.model;
 
+//abstract class?
 public class User {
 	private Boolean isAdmin;
 	private int userId;

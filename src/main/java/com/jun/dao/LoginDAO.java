@@ -3,8 +3,8 @@ package com.jun.dao;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import com.jun.model.User;
+import com.jun.model.Login;
 
 public interface LoginDAO {
-	public User authenticateUser(String username, String password, Connection con) throws SQLException;
+	public Login authenticateUser(String username, String password, Connection con) throws SQLException;
 }
