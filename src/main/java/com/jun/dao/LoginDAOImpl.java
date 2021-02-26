@@ -25,7 +25,7 @@ public class LoginDAOImpl implements LoginDAO{
 
 		ResultSet rs = pstmt.executeQuery();
 		if (rs.next()) {
-			Boolean isAdmin = rs.getBoolean("isAdmin");
+			Boolean isAdmin = rs.getBoolean("is_admin");
 			int loginId = rs.getInt("login_id");
 			
 			login = new Login(isAdmin, loginId);

@@ -7,7 +7,7 @@ import java.util.List;
 import com.jun.exceptions.UserNotFoundException;
 import com.jun.services.CustomerService;
 
-public class CustomerMenu implements Menu{
+public class CustomerMenu extends MainMenu implements Menu{
 	
 	public CustomerService customerService;
 	
@@ -19,6 +19,7 @@ public class CustomerMenu implements Menu{
 		
 		int choice = 0;
 		
+		//add select customer account by name
 		do {
 			System.out.println("=== USER MENU ===");
 			System.out.println("Please select an option below: ");
@@ -40,7 +41,6 @@ public class CustomerMenu implements Menu{
 				}
 					break;
 				case 2:
-					Menu.sc.close();
 					break;
 				default:
 					System.out.println("No valid choice entered, please try again");
@@ -53,7 +53,7 @@ public class CustomerMenu implements Menu{
 	private void getCustAccount() throws UserNotFoundException, SQLException {
 		
 		List<String> ids = new ArrayList<>();
-		ids = customerService.getCustomerCardNumber(MainMenu.loginId);
+		ids = customerService.getCustomerCardNumber(loginId);
 //		System.out.println(ids);
 		
 		int choice = 0;
@@ -81,7 +81,7 @@ public class CustomerMenu implements Menu{
 			cm.display();
 		}
 
-		if (choice < ids.size() & choice != 0) {
+		if (choice <= ids.size() & choice != 0) {
 			System.out.println(ids.get(choice - 1));
 			String acc = ids.get(choice - 1);
 			AccountMenu am = new AccountMenu(acc);

@@ -14,7 +14,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	@Override
 	public Customer getCustomerById(int id, Connection con) throws SQLException {
 		Customer cust = null;
-		String sql = "SELECT * FROM bank.user_account WHERE person_id = (SELECT person_id FROM bank.person WHERE login_id = ?)";
+		String sql = "SELECT * FROM bank.card WHERE person_id = ?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setLong(1, id);
 		
@@ -31,7 +31,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	
 //	@Override
 //	public List<Customer> getCardNumbersById(int id, Connection con) throws SQLException {
-//			String sql = "SELECT card_no FROM bank.user_account WHERE person_id = (SELECT person_id FROM person WHERE login_id = ?)";
+//			String sql = "SELECT card_no FROM bank.card_account WHERE person_id = (SELECT person_id FROM person WHERE login_id = ?)";
 //			PreparedStatement pstmt = con.prepareStatement(sql);
 //			pstmt.setLong(1, id);
 //			

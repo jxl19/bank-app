@@ -1,18 +1,32 @@
 package com.jun.ui;
 
+import java.sql.SQLException;
+
+import com.jun.exceptions.CardNotFoundException;
+import com.jun.services.CardService;
+
 public class AccountMenu implements Menu{
 	
 	private String id;
-
+	public CardService cardService;
 	public AccountMenu(String id) {
 		this.id = id;
+		this.cardService = new CardService();
 	}
 	
 	public void display() {
 		int choice = 0;
+		double balance = 10000.00;
+		try {
+			balance = this.cardService.getBalanceByCardNum(this.id);
+		} catch (SQLException | CardNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
 		
+		//we need a service here to get balance for the current account
 		do {
 			System.out.println("Account Menu for : " + this.id);
+			System.out.println("Current Balance: " + balance);
 			System.out.println("Choose an option below:");
 			System.out.println("1.) Deposit");
 			System.out.println("2.) Withdraw");
