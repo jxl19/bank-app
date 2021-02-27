@@ -32,7 +32,6 @@ public class MainMenu implements Menu {
 		try {
 			login = loginService.authenticateUser(un, pw);
 		} catch (SQLException | UserNotFoundException e) {
-//			System.out.println(e.getClass().getSimpleName() + " " + e.getMessage());
 			System.out.println(e.getMessage());
 		}
 		
@@ -42,10 +41,10 @@ public class MainMenu implements Menu {
 			isAdmin = login.isAdmin();
 			loginId = login.getLoginId();
 			EmployeeMenu em = new EmployeeMenu();
-			CustomerMenu um = new CustomerMenu();
+			CustomerMenu cm = new CustomerMenu();
 			if (isAdmin) {
 				em.display();
-			} else um.display();
+			} else cm.display();
 		}
 	}
 	

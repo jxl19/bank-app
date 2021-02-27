@@ -37,10 +37,10 @@ public class TransactionMenu implements Menu {
 				default: 
 					try {
 						this.transactionService.updateBalance(cardNum, transactionType, amount);
-						//after we update balance we want it to show
-						//right now it goes right back to accountmenu but its not updated there.. fix
 						try {
 							System.out.println("the updated balance is : " + this.cardService.getBalanceByCardNum(cardNum));
+							AccountMenu am = new AccountMenu(cardNum);
+							am.display();
 						} catch (CardNotFoundException e) {
 							e.printStackTrace();
 						}

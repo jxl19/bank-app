@@ -21,10 +21,10 @@ public class CustomerMenu extends MainMenu implements Menu{
 		
 		//add select customer account by name
 		do {
-			System.out.println("=== USER MENU ===");
+			System.out.println("=== CUSTOMER MENU ===");
 			System.out.println("Please select an option below: ");
 			System.out.println("1.) Select Customer Account");
-			System.out.println("2.) Back");
+			System.out.println("2.) Log Out");
 			
 			try {
 				choice = Integer.parseInt(Menu.sc.nextLine());
@@ -41,7 +41,8 @@ public class CustomerMenu extends MainMenu implements Menu{
 				}
 					break;
 				case 2:
-					break;
+					System.out.println("Logging out");
+					super.display();
 				default:
 					System.out.println("No valid choice entered, please try again");
 			}
