@@ -7,6 +7,10 @@ public class Transaction {
 	private String transactionType;
 	private String amount;
 	
+	public Transaction (String amount) {
+		this.amount = amount;
+	}
+	
 	public Transaction(String transactionType, String amount) {
 		super();
 		this.transactionType = transactionType;

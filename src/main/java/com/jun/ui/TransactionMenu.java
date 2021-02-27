@@ -1,22 +1,59 @@
 package com.jun.ui;
 
-public class TransactionMenu implements Menu{
+import java.sql.SQLException;
 
-	public String card_no;
-	public String transaction_type;
-//	public TransactionService transactionService;
+import com.jun.exceptions.CardNotFoundException;
+import com.jun.exceptions.InvalidBalanceException;
+import com.jun.services.CardService;
+import com.jun.services.TransactionService;
+
+public class TransactionMenu implements Menu {
+
+	public String cardNum;
+	public String transactionType;
+	public TransactionService transactionService;
+	public CardService cardService;
 	
-	public TransactionMenu(String card_no, String transaction_type) {
-		this.card_no = card_no;
-		this.transaction_type = transaction_type;
-//		this.transactionService = new TransactionService();
+	public TransactionMenu(String cardNum, String transactionType) {
+		this.cardNum = cardNum;
+		this.transactionType = transactionType;
+		this.transactionService = new TransactionService();
+		this.cardService = new CardService();
 	}
 
 	@Override
 	public void display() {
-		// TODO Auto-generated method stub
-		double bal = 1000.00;
+
+		int choice = 0;
 		
+		do {
+			System.out.println("1.) Exit");
+			System.out.println("Please input the amount to " + transactionType.toLowerCase());
+			String amount = Menu.sc.nextLine().toString();
+			
+			switch (choice) {
+				case 1: 
+					break;
+				default: 
+					try {
+						this.transactionService.updateBalance(cardNum, transactionType, amount);
+						//after we update balance we want it to show
+						//right now it goes right back to accountmenu but its not updated there.. fix
+						try {
+							System.out.println("the updated balance is : " + this.cardService.getBalanceByCardNum(cardNum));
+						} catch (CardNotFoundException e) {
+							e.printStackTrace();
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+					} catch (NumberFormatException e) {
+						System.out.println("Invalid input, please try again!");
+					} catch (InvalidBalanceException e) {
+						e.printStackTrace();
+					}
+				}
+				break;
+		} while (choice != 1);
 	}
 
 }

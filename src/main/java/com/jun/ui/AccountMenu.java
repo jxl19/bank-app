@@ -4,11 +4,13 @@ import java.sql.SQLException;
 
 import com.jun.exceptions.CardNotFoundException;
 import com.jun.services.CardService;
+import com.jun.services.TransactionService;
 
 public class AccountMenu implements Menu{
 	
 	private String id;
 	public CardService cardService;
+	public TransactionService transactionService;
 	public AccountMenu(String id) {
 		this.id = id;
 		this.cardService = new CardService();
@@ -38,12 +40,17 @@ public class AccountMenu implements Menu{
 			} catch(NumberFormatException e) {
 			}
 			
+			
 			switch (choice) {
 				case 1: 
 					System.out.println("Deposit menu");
+					TransactionMenu dtm = new TransactionMenu(this.id, "Deposit");
+					dtm.display();
 					break;
 				case 2:
 					System.out.println("Withdraw menu");
+					TransactionMenu wtm = new TransactionMenu(this.id, "Withdraw");
+					wtm.display();
 					break;
 				case 3: 
 					System.out.println("Transfer menu");
