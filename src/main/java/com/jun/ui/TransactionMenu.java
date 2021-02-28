@@ -32,8 +32,7 @@ public class TransactionMenu implements Menu {
 			System.out.println("1.) Exit");
 			System.out.println("Current balance is: " + String.valueOf(balance));
 			System.out.println("Please input the amount to " + transactionType.toLowerCase());
-			String amount = Menu.sc.nextLine().toString();
-			
+			double amount = Integer.parseInt(Menu.sc.nextLine());
 			switch (choice) {
 				case 1: 
 					break;

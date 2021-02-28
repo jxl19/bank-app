@@ -7,5 +7,5 @@ import com.jun.exceptions.InvalidBalanceException;
 import com.jun.model.Transaction;
 
 public interface TransactionDAO {
-	public Transaction updateBalance(String cardNum, String transactionType, String amount, Connection con) throws SQLException, NumberFormatException, InvalidBalanceException;
+	public Transaction updateBalance(String cardNum, String transactionType, double amount, Connection con) throws SQLException, NumberFormatException, InvalidBalanceException;
 }

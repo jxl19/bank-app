@@ -16,10 +16,11 @@ public class ApplicationDAOImpl implements ApplicationDAO {
 		String lastName = "";
 		int creditScore = 0;
 		
+		//we'll need another query later if employee approves to remove users avail cash
 		String applicationQuery = "INSERT INTO bank.pending_applications (login_id, first_name, last_name, credit, initial_balance) VALUES (?,?,?,?,?)";
-		String checkUserBalanceQuery = "SELECT * FROM bank.customer WHERE login_id = ?";
+		String userInfoQuery = "SELECT * FROM bank.customer WHERE login_id = ?";
 		
-		PreparedStatement userBalPS = con.prepareStatement(checkUserBalanceQuery);
+		PreparedStatement userBalPS = con.prepareStatement(userInfoQuery);
 		userBalPS.setInt(1, loginId);
 		System.out.println(loginId + "loginid");
 		ResultSet rs = userBalPS.executeQuery();

@@ -17,6 +17,9 @@ public class ApplicationService {
 	}
 	
 	public String applyForNewAccount(int loginId, double initialBalance) throws SQLException, InvalidBalanceException {
+		if (initialBalance < 0) {
+			throw new InvalidBalanceException("You cannot start a bank account with a negative balance!");
+		}
 		try (Connection con = ConnectionUtil.getConnection()) {
 			
 			double cash = applicationDAO.applyForNewBankAccount(loginId, initialBalance, con);

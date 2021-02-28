@@ -33,19 +33,17 @@ public class CustomerMenu implements Menu{
 			
 			switch (choice) {
 				case 1: 
-				try {
-					getCustAccount();
-				} catch (UserNotFoundException e) {
-					e.printStackTrace();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+					try {
+						getCustAccount();
+					} catch (UserNotFoundException | SQLException e) {
+						e.printStackTrace();
+					}
 					break;
 				case 2: 
 					System.out.println("Creating new account..");
 					AccountApplicationMenu aam = new AccountApplicationMenu();
 					aam.display();
-					break; //???? YES NO? 
+					break;
 				case 3:
 					System.out.println("Logging out");
 					MainMenu mm = new MainMenu();

@@ -16,7 +16,11 @@ public class TransactionService {
 		this.transactionDAO = new TransactionDAOImpl();
 	}
 	
-	public Transaction updateBalance(String cardNum, String transactionType, String amount) throws SQLException, NumberFormatException, InvalidBalanceException {
+	public Transaction updateBalance(String cardNum, String transactionType, double amount) throws SQLException, NumberFormatException, InvalidBalanceException {
+		if (amount < 0) {
+			//CHANGE OUR INPUT TO DOUBLE INSTEAD OF STRING LATER????
+			throw new InvalidBalanceException("You cannot input a negative balance!");
+		}
 		try (Connection con = ConnectionUtil.getConnection()) {
 			Transaction transaction = transactionDAO.updateBalance(cardNum, transactionType, amount, con);
 			if (transaction == null) {

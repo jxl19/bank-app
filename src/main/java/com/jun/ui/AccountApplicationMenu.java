@@ -14,10 +14,9 @@ public class AccountApplicationMenu implements Menu {
 	//if not create new person and tie it with this login
 	public String firstName;
 	public String lastName;
-	public int creditScore; // we'll use this to let employee judge
+	public int creditScore; 
 	public double initialBalance;
 	public ApplicationService applicationService;
-	//MainMenu.loginId
 	public AccountApplicationMenu() {
 		this.applicationService = new ApplicationService();
 	}
