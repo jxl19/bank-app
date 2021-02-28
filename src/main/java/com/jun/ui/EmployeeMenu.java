@@ -24,14 +24,14 @@ public class EmployeeMenu implements Menu{
 				case 1: 
 					//another menu for user accounts and how to handle
 					System.out.println("checking user account");
-					CheckUserAccount cua = new CheckUserAccount();
-					cua.display();
+					ReviewCustomerMenu rcm = new ReviewCustomerMenu();
+					rcm.display();
 					break;
 				case 2: 
 					//anothger menu for new applicants and how to handle
 					System.out.println("checking new applications");
-					CheckNewApplications cna = new CheckNewApplications();
-					cna.display();
+					ReviewApplicationMenu ram = new ReviewApplicationMenu();
+					ram.display();
 					break;
 				case 3:
 					System.out.println("exiting employee");

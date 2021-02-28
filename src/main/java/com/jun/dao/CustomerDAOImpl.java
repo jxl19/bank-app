@@ -24,8 +24,10 @@ public class CustomerDAOImpl implements CustomerDAO {
 		while (rs.next()) {
 			cards.add(rs.getString("card_no"));
 		}
-		
-		cust = new Customer(cards, id);
+		if (cards.size() < 0) {			
+			cust = new Customer(cards, id);
+		}
+
 		return cust;
 	}
 	

@@ -23,9 +23,9 @@ public class CustomerService {
 			Customer customer;
 			
 			customer = customerDAO.getCustomerById(id, con);
-			
+			System.out.println("cstomer" + customer);
 			if(customer == null) {
-				throw new UserNotFoundException("Invalid user...?");
+				throw new UserNotFoundException("User does not exist");
 			}
 			
 			return customer.getCardNo();
