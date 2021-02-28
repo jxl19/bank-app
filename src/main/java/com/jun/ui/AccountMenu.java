@@ -18,7 +18,7 @@ public class AccountMenu implements Menu{
 	
 	public void display() {
 		int choice = 0;
-		double balance = 10000.00;
+		double balance = 0;
 		try {
 			balance = this.cardService.getBalanceByCardNum(this.id);
 		} catch (SQLException | CardNotFoundException e) {
@@ -44,12 +44,12 @@ public class AccountMenu implements Menu{
 			switch (choice) {
 				case 1: 
 					System.out.println("Deposit menu");
-					TransactionMenu dtm = new TransactionMenu(this.id, "Deposit");
+					TransactionMenu dtm = new TransactionMenu(this.id, "Deposit", balance);
 					dtm.display();
 					break;
 				case 2:
 					System.out.println("Withdraw menu");
-					TransactionMenu wtm = new TransactionMenu(this.id, "Withdraw");
+					TransactionMenu wtm = new TransactionMenu(this.id, "Withdraw", balance);
 					wtm.display();
 					break;
 				case 3: 

@@ -11,23 +11,26 @@ public class TransactionMenu implements Menu {
 
 	public String cardNum;
 	public String transactionType;
+	public double balance;
 	public TransactionService transactionService;
 	public CardService cardService;
 	
-	public TransactionMenu(String cardNum, String transactionType) {
+	public TransactionMenu(String cardNum, String transactionType, double balance) {
 		this.cardNum = cardNum;
 		this.transactionType = transactionType;
+		this.balance = balance;
 		this.transactionService = new TransactionService();
 		this.cardService = new CardService();
 	}
 
 	@Override
 	public void display() {
-
+		
 		int choice = 0;
 		
 		do {
 			System.out.println("1.) Exit");
+			System.out.println("Current balance is: " + String.valueOf(balance));
 			System.out.println("Please input the amount to " + transactionType.toLowerCase());
 			String amount = Menu.sc.nextLine().toString();
 			
@@ -44,13 +47,9 @@ public class TransactionMenu implements Menu {
 						} catch (CardNotFoundException e) {
 							e.printStackTrace();
 						}
-					} catch (SQLException e) {
-						e.printStackTrace();
-					} catch (NumberFormatException e) {
-						System.out.println("Invalid input, please try again!");
-					} catch (InvalidBalanceException e) {
-						e.printStackTrace();
-					}
+					} catch (SQLException | NumberFormatException | InvalidBalanceException e) {
+						System.out.println(e.getMessage());
+					} 
 				}
 				break;
 		} while (choice != 1);

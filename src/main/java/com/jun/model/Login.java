@@ -4,25 +4,25 @@ import java.util.Objects;
 
 public class Login {
 
-	private boolean isAdmin;
+	private boolean isEmployee;
 	private int loginId;
 	
 	public Login() {
 		super();
 	}
 
-	public Login(boolean isAdmin, int loginId) {
+	public Login(boolean isEmployee, int loginId) {
 		super();
-		this.isAdmin = isAdmin;
+		this.isEmployee = isEmployee;
 		this.loginId = loginId;
 	}
 
-	public boolean isAdmin() {
-		return isAdmin;
+	public boolean isEmployee() {
+		return isEmployee;
 	}
 
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
+	public void setEmployee(boolean isEmployee) {
+		this.isEmployee = isEmployee;
 	}
 
 	public int getLoginId() {
@@ -34,13 +34,8 @@ public class Login {
 	}
 
 	@Override
-	public String toString() {
-		return "Login [isAdmin=" + isAdmin + ", loginId=" + loginId + "]";
-	}
-
-	@Override
 	public int hashCode() {
-		return Objects.hash(isAdmin, loginId);
+		return Objects.hash(isEmployee, loginId);
 	}
 
 	@Override
@@ -52,7 +47,12 @@ public class Login {
 		if (getClass() != obj.getClass())
 			return false;
 		Login other = (Login) obj;
-		return isAdmin == other.isAdmin && loginId == other.loginId;
+		return isEmployee == other.isEmployee && loginId == other.loginId;
+	}
+
+	@Override
+	public String toString() {
+		return "Login [isEmployee=" + isEmployee + ", loginId=" + loginId + "]";
 	}
 
 }

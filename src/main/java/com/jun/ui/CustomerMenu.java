@@ -7,7 +7,7 @@ import java.util.List;
 import com.jun.exceptions.UserNotFoundException;
 import com.jun.services.CustomerService;
 
-public class CustomerMenu extends MainMenu implements Menu{
+public class CustomerMenu implements Menu{
 	
 	public CustomerService customerService;
 	
@@ -23,8 +23,9 @@ public class CustomerMenu extends MainMenu implements Menu{
 		do {
 			System.out.println("=== CUSTOMER MENU ===");
 			System.out.println("Please select an option below: ");
-			System.out.println("1.) Select Customer Account");
-			System.out.println("2.) Log Out");
+			System.out.println("1.) Select Bank Account");
+			System.out.println("2.) Apply for new Bank account");
+			System.out.println("3.) Log Out");
 			
 			try {
 				choice = Integer.parseInt(Menu.sc.nextLine());
@@ -40,29 +41,34 @@ public class CustomerMenu extends MainMenu implements Menu{
 					e.printStackTrace();
 				}
 					break;
-				case 2:
+				case 2: 
+					System.out.println("Creating new account..");
+					AccountApplicationMenu aam = new AccountApplicationMenu();
+					aam.display();
+					break; //???? YES NO? 
+				case 3:
 					System.out.println("Logging out");
-					super.display();
+					MainMenu mm = new MainMenu();
+					mm.display();
 				default:
 					System.out.println("No valid choice entered, please try again");
 			}
 			
-		} while (choice != 2);
+		} while (choice != 3);
 	}
 	
 	
 	private void getCustAccount() throws UserNotFoundException, SQLException {
 		
 		List<String> ids = new ArrayList<>();
-		ids = customerService.getCustomerCardNumber(loginId);
-//		System.out.println(ids);
+		//public var in mainmenu or a public class in mainmenu?
+		ids = customerService.getCustomerCardNumber(MainMenu.loginId);
 		
 		int choice = 0;
-		String ac;
 		StringBuilder sb = new StringBuilder();
-		sb.append("=== CUSTOMER ACCOUNTS===");
+		sb.append("=== BANK ACCOUNTS===");
 		sb.append(System.getProperty("line.separator"));
-		sb.append("Select a customer account below");
+		sb.append("Select a bank account below");
 		sb.append(System.getProperty("line.separator"));
 		for (int i = 0; i <= ids.size(); i++) {
 			if (i < ids.size()) sb.append(i+1 + ".) " + ids.get(i));

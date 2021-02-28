@@ -9,7 +9,7 @@ import com.jun.services.LoginService;
 public class MainMenu implements Menu {
 	
 	public LoginService loginService; 
-	public static boolean isAdmin;
+	public static boolean isEmployee;
 	public static int loginId;
 	
 	public MainMenu() {
@@ -18,6 +18,7 @@ public class MainMenu implements Menu {
 
 	public void display() {
 		System.out.println("=== Welcome to Bank of Jun! ===");
+		//TODO: need menu here to either create account or login
 		getAccountType();
 	}
 	
@@ -38,11 +39,11 @@ public class MainMenu implements Menu {
 		if (login == null) {
 			this.getAccountType();
 		} else {
-			isAdmin = login.isAdmin();
+			isEmployee = login.isEmployee();
 			loginId = login.getLoginId();
 			EmployeeMenu em = new EmployeeMenu();
 			CustomerMenu cm = new CustomerMenu();
-			if (isAdmin) {
+			if (isEmployee) {
 				em.display();
 			} else cm.display();
 		}

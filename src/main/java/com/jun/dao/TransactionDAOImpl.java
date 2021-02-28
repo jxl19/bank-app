@@ -28,7 +28,6 @@ public class TransactionDAOImpl implements TransactionDAO {
 		if (balRS.next()) {
 			cardBalance = balRS.getDouble("balance");
 		}
-		System.out.println("before");
 		double transactionAmount = Double.parseDouble(amount);
 		if (transactionType == "Deposit") {
 			cardBalance += transactionAmount;
@@ -40,13 +39,10 @@ public class TransactionDAOImpl implements TransactionDAO {
 				updatePS.setDouble(1, cardBalance);
 				transaction = new Transaction(String.valueOf(cardBalance));
 			} else {
-				throw new InvalidBalanceException("Not enough balance.. try another amouint");
+				return transaction = null;
 			}
 		}
-		System.out.println("after");
 		updatePS.executeUpdate();
-		
-//		System.out.println("New balance is :" + balRS.getDouble("balance"));
 		
 		return transaction;
 	}
