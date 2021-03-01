@@ -6,5 +6,5 @@ import java.sql.SQLException;
 import com.jun.exceptions.InvalidBalanceException;
 
 public interface ApplicationDAO {
-	public double applyForNewBankAccount(int loginId, double initialBalance, Connection con) throws SQLException, InvalidBalanceException;
+	public void applyForNewBankAccount(int loginId, double initialBalance, boolean isCheckingAccount, Connection con) throws SQLException, InvalidBalanceException;
 }

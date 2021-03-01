@@ -27,8 +27,9 @@ public class CustomerMenu implements Menu{
 			System.out.println("=== CUSTOMER MENU ===");
 			System.out.println("Please select an option below: ");
 			System.out.println("1.) Select Bank Account");
-			System.out.println("2.) Apply for new Bank account");
-			System.out.println("3.) Log Out");
+			System.out.println("2.) Apply for new Checkings account");
+			System.out.println("3.) Apply for new Savings account");
+			System.out.println("4.) Log Out");
 			
 			try {
 				choice = Integer.parseInt(Menu.sc.nextLine());
@@ -39,15 +40,20 @@ public class CustomerMenu implements Menu{
 					try {
 						getCustAccount(MainMenu.loginId);
 					} catch (UserNotFoundException | SQLException e) {
-						e.printStackTrace();
+						System.out.println(e.getMessage());
 					}
 					break;
 				case 2: 
-					System.out.println("Creating new account..");
-					AccountApplicationMenu aam = new AccountApplicationMenu();
-					aam.display();
+					System.out.println("Applying for checkings account..");
+					AccountApplicationMenu caam = new AccountApplicationMenu(true);
+					caam.display();
 					break;
-				case 3:
+				case 3: 
+					System.out.println("Applying for savings account..");
+					AccountApplicationMenu saam = new AccountApplicationMenu(false);
+					saam.display();
+					break;
+				case 4:
 					System.out.println("Logging out");
 					MainMenu mm = new MainMenu();
 					mm.display();
@@ -55,7 +61,7 @@ public class CustomerMenu implements Menu{
 					System.out.println("No valid choice entered, please try again");
 			}
 			
-		} while (choice != 3);
+		} while (choice != 4);
 	}
 	
 	void getCustAccount(int id) throws UserNotFoundException, SQLException {
@@ -88,7 +94,6 @@ public class CustomerMenu implements Menu{
 			choice = Integer.parseInt(Menu.sc.nextLine());
 		} catch (NumberFormatException e) {} 
 		
-		//exit menu
 		if (choice - 1 == ids.size()) {
 			CustomerMenu cm = new CustomerMenu();
 			System.out.println("Exiting..");

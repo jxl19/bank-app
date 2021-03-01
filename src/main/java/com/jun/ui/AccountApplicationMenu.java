@@ -7,18 +7,15 @@ import com.jun.services.ApplicationService;
 
 public class AccountApplicationMenu implements Menu {
 
-//	public String cardNumber; //we'll create in dao, 
-	//we'll need to tie it in with a customer(user) also at the same time,
-	//also if the person creating this account doesnt already have a person id, create it.. check 
-	// user applies > fn,ln,credit > approve > create card > check in current login/account if we have this fn+ln combo,
-	//if not create new person and tie it with this login
 	public String firstName;
 	public String lastName;
 	public int creditScore; 
 	public double initialBalance;
+	public boolean isCheckingAccount;
 	public ApplicationService applicationService;
-	public AccountApplicationMenu() {
+	public AccountApplicationMenu(boolean isCheckingAccount) {
 		this.applicationService = new ApplicationService();
+		this.isCheckingAccount = isCheckingAccount;
 	}
 	
 	public void display() {
@@ -38,7 +35,7 @@ public class AccountApplicationMenu implements Menu {
 					break;
 				default: 
 				try {
-					String application = applicationService.applyForNewAccount(MainMenu.loginId, choice);
+					String application = applicationService.applyForNewAccount(MainMenu.loginId, choice, isCheckingAccount);
 					System.out.println(application);
 					choice = 1;
 				} catch (SQLException | InvalidBalanceException e) {

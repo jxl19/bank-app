@@ -25,7 +25,6 @@ public class AccountMenu implements Menu{
 			System.out.println(e.getMessage());
 		}
 		
-		//we need a service here to get balance for the current account
 		do {
 			System.out.println("Account Menu for : " + this.id);
 			System.out.println("Current Balance: " + balance);

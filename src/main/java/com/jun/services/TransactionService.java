@@ -18,7 +18,7 @@ public class TransactionService {
 	
 	public Transaction updateBalance(String cardNum, String transactionType, double amount) throws SQLException, NumberFormatException, InvalidBalanceException {
 		if (amount < 0) {
-			//CHANGE OUR INPUT TO DOUBLE INSTEAD OF STRING LATER????
+			
 			throw new InvalidBalanceException("You cannot input a negative balance!");
 		}
 		try (Connection con = ConnectionUtil.getConnection()) {

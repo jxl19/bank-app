@@ -3,14 +3,15 @@ package com.jun.model;
 import java.util.Objects;
 
 public class ApplicationReview {
-	public int appId;
-	public int loginId;
-	public String firstName;
-	public String lastName;
-	public int credit;
-	public double initialBalance;
+	private int appId;
+	private int loginId;
+	private String firstName;
+	private String lastName;
+	private int credit;
+	private double initialBalance;
+	private boolean isCheckingAccount;
 	public ApplicationReview(int appId, int loginId, String firstName, String lastName, int credit,
-			double initialBalance) {
+			double initialBalance, boolean isCheckingAccount) {
 		super();
 		this.appId = appId;
 		this.loginId = loginId;
@@ -18,6 +19,7 @@ public class ApplicationReview {
 		this.lastName = lastName;
 		this.credit = credit;
 		this.initialBalance = initialBalance;
+		this.isCheckingAccount = isCheckingAccount;
 	}
 	public int getAppId() {
 		return appId;
@@ -55,9 +57,15 @@ public class ApplicationReview {
 	public void setInitialBalance(double initialBalance) {
 		this.initialBalance = initialBalance;
 	}
+	public boolean isCheckingAccount() {
+		return isCheckingAccount;
+	}
+	public void setCheckingAccount(boolean isCheckingAccount) {
+		this.isCheckingAccount = isCheckingAccount;
+	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(appId, credit, firstName, initialBalance, lastName, loginId);
+		return Objects.hash(appId, credit, firstName, initialBalance, isCheckingAccount, lastName, loginId);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -70,11 +78,13 @@ public class ApplicationReview {
 		ApplicationReview other = (ApplicationReview) obj;
 		return appId == other.appId && credit == other.credit && Objects.equals(firstName, other.firstName)
 				&& Double.doubleToLongBits(initialBalance) == Double.doubleToLongBits(other.initialBalance)
-				&& Objects.equals(lastName, other.lastName) && loginId == other.loginId;
+				&& isCheckingAccount == other.isCheckingAccount && Objects.equals(lastName, other.lastName)
+				&& loginId == other.loginId;
 	}
 	@Override
 	public String toString() {
 		return "ApplicationReview [appId=" + appId + ", loginId=" + loginId + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", credit=" + credit + ", initialBalance=" + initialBalance + "]";
+				+ lastName + ", credit=" + credit + ", initialBalance=" + initialBalance + ", isCheckingAccount="
+				+ isCheckingAccount + "]";
 	}
 }

@@ -14,8 +14,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 	@Override
 	public Customer getCustomerById(int id, Connection con) throws SQLException {
 		Customer cust = null;
-		String sql = "SELECT * FROM bank.card WHERE login_id = ?";
-		String custSql = "SELECT balance FROM bank.customer WHERE login_id = ?";
+		String sql = "SELECT * FROM bank.account WHERE login_id = ?";
+		String custSql = "SELECT cash FROM bank.customer WHERE login_id = ?";
 
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setLong(1, id);
@@ -24,9 +24,12 @@ public class CustomerDAOImpl implements CustomerDAO {
 		List<String> cards = new ArrayList<>();
 
 		while (rs.next()) {
-			cards.add(rs.getString("card_no"));
+			cards.add(rs.getString("account_no"));
 		}
-		if (cards.size() < 0) {
+		
+		System.out.println("cards" + cards);
+		System.out.println("id" + id);
+		if (cards.size() > 0) {
 			PreparedStatement balPS = con.prepareStatement(custSql);
 			balPS.setInt(1, id);
 			ResultSet balRS = balPS.executeQuery();
@@ -34,9 +37,12 @@ public class CustomerDAOImpl implements CustomerDAO {
 			if (balRS.next()) {
 				custBal = balRS.getDouble("cash");
 			}
+			System.out.println("cards" + cards);
+			System.out.println("id" + id);
+			System.out.println("bal" + custBal);
 			cust = new Customer(cards, id, custBal);
 		}
-
+		System.out.println("cust" + cust);
 		return cust;
 	}
 

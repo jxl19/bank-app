@@ -28,7 +28,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 		if (balRS.next()) {
 			cardBalance = balRS.getDouble("balance");
 		}
-//		double transactionAmount = amount;
+		
 		if (transactionType == "Deposit") {
 			cardBalance += amount;
 			updatePS.setDouble(1, cardBalance);

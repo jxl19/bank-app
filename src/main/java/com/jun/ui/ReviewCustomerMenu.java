@@ -25,7 +25,8 @@ public class ReviewCustomerMenu implements Menu{
 			
 			switch (choice) {
 				case 1:
-					break;
+					EmployeeMenu em = new EmployeeMenu();
+					em.display();
 				default: 
 					CurrentCustomerMenu ccm = new CurrentCustomerMenu();
 					try {
@@ -34,7 +35,6 @@ public class ReviewCustomerMenu implements Menu{
 						System.out.println(e.getMessage());
 					} 
 			}
-			System.out.println(choice);
 			
 		} while(choice != 1);
 	}

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.jun.exceptions.InvalidApplicationException;
 import com.jun.exceptions.InvalidBalanceException;
 import com.jun.model.ApplicationReview;
 
@@ -18,6 +19,8 @@ public class ReviewApplicationDAOImpl implements ReviewApplicationDAO {
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		ResultSet rs = pstmt.executeQuery();
 		
+		
+		
 		if (rs.next()) {
 			int appId = rs.getInt("app_id");
 			int loginId = rs.getInt("login_id");
@@ -25,17 +28,17 @@ public class ReviewApplicationDAOImpl implements ReviewApplicationDAO {
 			String lastName = rs.getString("last_name");
 			int credit = rs.getInt("credit");
 			double initBalance = rs.getDouble("initial_balance");
+			boolean isCheckingAccount = rs.getBoolean("is_checking_account");
 			
-			applicationReview = new ApplicationReview(appId, loginId, firstName, lastName, credit, initBalance); 
+			applicationReview = new ApplicationReview(appId, loginId, firstName, lastName, credit, initBalance, isCheckingAccount); 
 		}
+		System.out.println("appreview!!" + applicationReview);
 		return applicationReview;
 	}
 
 	@Override
-	public boolean approveApplication(int loginId, int appId, double initialBalance, Connection con) throws InvalidBalanceException, SQLException {
-		//we will need login id and app id to update those 2
-		//we will need multiple queries - one to get persons balance and another to update blanace and create the card and then create the account
-		//set autocommit to false somewhere
+	public boolean approveApplication(int loginId, int appId, double initialBalance, boolean isCheckingAccount, Connection con) throws InvalidBalanceException, SQLException {
+		
 		
 		int firstDigit = ThreadLocalRandom.current().nextInt(3, 6 + 1);
 		StringBuilder accountNumber = new StringBuilder();
@@ -46,8 +49,8 @@ public class ReviewApplicationDAOImpl implements ReviewApplicationDAO {
 			i++;
 		}
 		System.out.println(accountNumber);
-		String updateAppSql = "UPDATE bank.pending_applications SET pending = FALSE WHERE app_id = ?";
-		String createAccSql = "INSERT INTO bank.card (card_no, login_id, balance) VALUES (?,?,?)";
+		String updateAppSql = "UPDATE bank.pending_applications SET pending = FALSE, approved= TRUE WHERE app_id = ?";
+		String createAccSql = "INSERT INTO bank.account (account_no, login_id, balance, is_checking_account) VALUES (?,?,?,?)";
 		PreparedStatement updatePS = con.prepareStatement(updateAppSql);
 		updatePS.setInt(1, appId);
 		
@@ -57,15 +60,33 @@ public class ReviewApplicationDAOImpl implements ReviewApplicationDAO {
 		createPS.setString(1, accountNumber.toString());
 		createPS.setInt(2, loginId);
 		createPS.setDouble(3, initialBalance);
+		createPS.setBoolean(4, isCheckingAccount);
 		
 		createPS.executeUpdate();
 		return true;
 	}
 
 	@Override
-	public boolean declineApplication(int loginId, int appId, double intialBalance, Connection con) throws InvalidBalanceException, SQLException {
-		
+	public boolean rejectAccount(int appId, Connection con) throws SQLException {
+		String sql = "UPDATE bank.pending_applications SET pending = FALSE, approved = FALSE WHERE app_id = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, appId);
+		ps.executeUpdate();
 		return true;
+	}
+
+	@Override
+	public boolean checkIfValidApplication(int appId, Connection con) throws InvalidApplicationException, SQLException {
+		boolean valid = false;
+		String sql = "SELECT pending FROM bank.pending_applications WHERE app_id = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, appId);
+		ResultSet rs = ps.executeQuery();
+		
+		if (rs.next()) {
+			valid = rs.getBoolean("pending");
+		}
+		return valid;
 	}
 
 }

@@ -12,7 +12,7 @@ public class CardDAOImpl implements CardDAO {
 	@Override
 	public Card getCardInfo(String cardNum, Connection con) throws SQLException {
 		Card card = null;
-		String sql = "SELECT * FROM bank.card WHERE card_no = ?";
+		String sql = "SELECT * FROM bank.account WHERE account_no = ?";
 		
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, cardNum);
