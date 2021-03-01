@@ -21,13 +21,18 @@ public class AccountApplicationMenu implements Menu {
 	public void display() {
 		System.out.println("=== APPLY FOR A NEW ACCOUNT ===");
 		int choice = 0;
+		double amount = 0;
 		
 		do {
 			System.out.println("Please enter your starting balance for this account: ");
 			System.out.println("1.) Exit");
 			
 			try {
-				choice = Integer.parseInt(Menu.sc.nextLine());
+				System.out.println("here");
+				amount = Double.parseDouble(Menu.sc.nextLine());
+				System.out.println(amount);
+//				choice = Integer.parseInt(amount);
+				System.out.println("choice" + choice);
 			} catch (NumberFormatException e) {};
 			
 			switch (choice) {
@@ -35,7 +40,9 @@ public class AccountApplicationMenu implements Menu {
 					break;
 				default: 
 				try {
-					String application = applicationService.applyForNewAccount(MainMenu.loginId, choice, isCheckingAccount);
+					//need double here
+					System.out.println(amount);
+					String application = applicationService.applyForNewAccount(MainMenu.loginId, amount, isCheckingAccount);
 					System.out.println(application);
 					choice = 1;
 				} catch (SQLException | InvalidBalanceException e) {

@@ -58,6 +58,8 @@ public class TransactionService {
 				} else {
 					//transtion that requires confirmaction from other account
 					//once approved -- transfer
+					transactionDAO.requestTransfer(fromAccount, toAccount, amount, toID, con);
+					ret = "Your transfer is pending";
 				}
 					
 			}

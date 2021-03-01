@@ -65,10 +65,17 @@ public class TransactionDAOImpl implements TransactionDAO {
 	}
 
 	@Override
-	public boolean requestTransfer(String fromAccount, String toAccount, double amount, int toAccountId)
+	public boolean requestTransfer(String fromAccount, String toAccount, double amount, int toAccountId, Connection con)
 			throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
+		String sql = "INSERT INTO bank.pending_transfers(from_account, to_account, amount, account_id) VALUES (?,?,?,?)";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, fromAccount);
+		ps.setString(2, toAccount);
+		ps.setDouble(3, amount);
+		ps.setInt(4, toAccountId);
+		ps.executeUpdate();
+		
+		return true;
 	}
 
 
