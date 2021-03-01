@@ -6,17 +6,17 @@ import java.util.List;
 
 import com.jun.exceptions.CardNotFoundException;
 import com.jun.exceptions.UserNotFoundException;
-import com.jun.services.CardService;
+import com.jun.services.AccountService;
 import com.jun.services.CustomerService;
 
 public class CustomerMenu implements Menu{
 	
 	public CustomerService customerService;
-	public CardService cardService;
+	public AccountService cardService;
 	
 	public CustomerMenu() {
 		this.customerService = new CustomerService();
-		this.cardService = new CardService();
+		this.cardService = new AccountService();
 	}
 	
 	public void display() {

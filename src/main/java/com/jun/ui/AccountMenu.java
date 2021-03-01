@@ -3,17 +3,17 @@ package com.jun.ui;
 import java.sql.SQLException;
 
 import com.jun.exceptions.CardNotFoundException;
-import com.jun.services.CardService;
+import com.jun.services.AccountService;
 import com.jun.services.TransactionService;
 
 public class AccountMenu implements Menu{
 	
 	private String id;
-	public CardService cardService;
+	public AccountService cardService;
 	public TransactionService transactionService;
 	public AccountMenu(String id) {
 		this.id = id;
-		this.cardService = new CardService();
+		this.cardService = new AccountService();
 	}
 	
 	public void display() {
@@ -53,6 +53,8 @@ public class AccountMenu implements Menu{
 					break;
 				case 3: 
 					System.out.println("Transfer menu");
+					TransactionMenu ttm = new TransactionMenu(this.id, "Transfer", balance);
+					ttm.display();
 					break;
 				case 4: 
 					CustomerMenu cm = new CustomerMenu();

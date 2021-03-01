@@ -8,6 +8,8 @@ import org.postgresql.Driver;
 
 public class ConnectionUtil {
 	public static Connection getConnection() throws SQLException{
+		//test sysout here for our unit tests to make sure its not calling this actual connection
+//		System.out.println("test");
 		DriverManager.registerDriver(new Driver()); 
 		
 		String url = System.getenv("db_url");
