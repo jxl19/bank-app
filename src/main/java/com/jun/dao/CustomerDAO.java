@@ -7,4 +7,5 @@ import com.jun.model.Customer;
 
 public interface CustomerDAO {
 	public Customer getCustomerById(int id, Connection con) throws SQLException; 
+	public Customer getCustomerBalance(int id, Connection con) throws SQLException;
 }

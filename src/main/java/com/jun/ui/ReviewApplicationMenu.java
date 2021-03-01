@@ -3,6 +3,7 @@ package com.jun.ui;
 import java.sql.SQLException;
 
 import com.jun.exceptions.ApplicationNotFoundException;
+import com.jun.exceptions.InvalidBalanceException;
 import com.jun.model.ApplicationReview;
 import com.jun.services.ReviewApplicationService;
 
@@ -16,18 +17,22 @@ public class ReviewApplicationMenu implements Menu {
 	
 	public void display() {
 		int choice = 0;
+		ApplicationReview ar = null;
+		try {
+			ar = reviewApplicationService.reviewApplications();
+		} catch (ApplicationNotFoundException | SQLException | NullPointerException e) {
+			System.out.println(e.getMessage());
+		} 
+		if (ar == null) {
+			choice = 3;
+		}
 		
 		do {
 			System.out.println("=== APPLICATION REVIEW ===");
+			System.out.println("Customer Name: " + ar.getFirstName() + " " + ar.getLastName());
+			System.out.println("Credit Score: " + ar.getCredit());
+			System.out.println("Account starting balance: " + ar.getInitialBalance());
 			System.out.println("Please review the application");
-			try {
-				ApplicationReview ar = reviewApplicationService.reviewApplications();
-				System.out.println("Customer Name: " + ar.getFirstName() + " " + ar.getLastName());
-				System.out.println("Credit Score: " + ar.getCredit());
-				System.out.println("Account starting balance: " + ar.getInitialBalance());
-			} catch (ApplicationNotFoundException | SQLException e) {
-				System.out.println(e.getMessage());
-			} 
 			System.out.println("1.) Approve");
 			System.out.println("2.) Decline");
 			System.out.println("3.) Exit");
@@ -40,6 +45,12 @@ public class ReviewApplicationMenu implements Menu {
 			switch (choice) {
 			case 1: 
 				System.out.println("approved");
+				try {
+					reviewApplicationService.approveAccount(ar.getLoginId(), ar.getAppId(), ar.getInitialBalance());
+					this.display();
+				} catch (InvalidBalanceException | SQLException e) {
+					System.out.println(e.getMessage());
+				} 
 				break;
 			case 2:
 				System.out.println("declined");
