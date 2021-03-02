@@ -124,5 +124,15 @@ public class TransactionDAOImpl implements TransactionDAO {
 		return pendingTransfer;
 	}
 
+	@Override
+	public boolean declineTransfer(int transferId, Connection con) throws SQLException {
+		String sql = "UPDATE bank.pending_transfers SET pending = FALSE WHERE transfer_id = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, transferId);
+		ps.executeUpdate();
+		
+		return true;
+	}
+
 
 }

@@ -3,7 +3,9 @@ package com.jun.ui;
 import java.sql.SQLException;
 
 import com.jun.exceptions.CardNotFoundException;
+import com.jun.exceptions.InvalidAccountException;
 import com.jun.exceptions.InvalidBalanceException;
+import com.jun.exceptions.InvalidTransferRequestException;
 import com.jun.services.AccountService;
 import com.jun.services.TransactionService;
 
@@ -62,7 +64,7 @@ public class TransactionMenu implements Menu {
 								System.out.println(transfer);
 								AccountMenu am = new AccountMenu(cardNum);
 								am.display();
-							} catch (SQLException | InvalidBalanceException e) {
+							} catch (SQLException | InvalidBalanceException | InvalidTransferRequestException | InvalidAccountException e) {
 								System.out.println(e.getMessage());
 							} 
 						}

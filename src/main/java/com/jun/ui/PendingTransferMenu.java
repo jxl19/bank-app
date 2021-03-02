@@ -58,7 +58,8 @@ public class PendingTransferMenu implements Menu{
 					PendingTransfer currentAccount = pendingTransfers.get(choice - 2);
 					System.out.println("=== REVIEWING TRANSFER ===");
 					System.out.println("From account: " + currentAccount.getFromAccountId());
-					System.out.println("Amount transfering into your account: " + currentAccount.getAmount());
+					System.out.println("To account: " + currentAccount.getToAccountId());
+					System.out.println("Amount: " + currentAccount.getAmount());
 					System.out.println("1.) Exit");
 					System.out.println("2.) Approve");
 					System.out.println("3.) Deny");
@@ -83,6 +84,14 @@ public class PendingTransferMenu implements Menu{
 							break;
 						case 3:
 							System.out.println("declined");
+							try {
+								String approvedTransaction = transactionService.declineTransfer(currentAccount.getTransferId());
+								System.out.println(approvedTransaction);
+								selected = 1;
+								break;
+							} catch (SQLException e) {
+								System.out.println(e.getMessage());
+							} 
 							selected = 1;
 							break;
 					} while(selected != 1);

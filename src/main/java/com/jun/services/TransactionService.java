@@ -8,7 +8,9 @@ import com.jun.dao.AccountDAO;
 import com.jun.dao.AccountDAOImpl;
 import com.jun.dao.TransactionDAO;
 import com.jun.dao.TransactionDAOImpl;
+import com.jun.exceptions.InvalidAccountException;
 import com.jun.exceptions.InvalidBalanceException;
+import com.jun.exceptions.InvalidTransferRequestException;
 import com.jun.model.Account;
 import com.jun.model.PendingTransfer;
 import com.jun.model.Transaction;
@@ -17,11 +19,11 @@ import com.jun.util.ConnectionUtil;
 public class TransactionService {
 
 	public TransactionDAO transactionDAO;
-	public AccountDAO cardDAO;
+	public AccountDAO accountDAO;
 	
 	public TransactionService() {
 		this.transactionDAO = new TransactionDAOImpl();
-		this.cardDAO = new AccountDAOImpl();
+		this.accountDAO = new AccountDAOImpl();
 	}
 	
 	public Transaction updateBalance(String cardNum, String transactionType, double amount) throws SQLException, NumberFormatException, InvalidBalanceException {
@@ -38,11 +40,17 @@ public class TransactionService {
 		}
 	}
 	
-	public String transferBalanceToAccount(int id, String toAccount, String fromAccount, double amount) throws SQLException, InvalidBalanceException {
+	public String transferBalanceToAccount(int id, String toAccount, String fromAccount, double amount) throws SQLException, InvalidBalanceException, InvalidTransferRequestException, InvalidAccountException {
+		if (toAccount == fromAccount) {
+			throw new InvalidTransferRequestException("You cannot transfer to yourself!");
+		}
 		try (Connection con = ConnectionUtil.getConnection()) {
 			String ret = "";
-			Account fromAcc = cardDAO.getCardInfo(fromAccount, con);
-			Account toAcc = cardDAO.getCardInfo(toAccount, con);
+			Account toAcc = accountDAO.getCardInfo(toAccount, con);
+			if (toAcc == null) {
+				throw new InvalidAccountException("This account this not exist. Please try again.");
+			}
+			Account fromAcc = accountDAO.getCardInfo(fromAccount, con);
 			
 			double fromBal = fromAcc.getBalance();
 			double toBal = toAcc.getBalance();
@@ -79,8 +87,8 @@ public class TransactionService {
 
 			String fromAccId = pendingTransfer.getFromAccountId();
 			String toAccId = pendingTransfer.getToAccountId();
-			Account fromAcc = cardDAO.getCardInfo(fromAccId, con);
-			Account toAcc = cardDAO.getCardInfo(toAccId, con);
+			Account fromAcc = accountDAO.getCardInfo(fromAccId, con);
+			Account toAcc = accountDAO.getCardInfo(toAccId, con);
 			double fromBal = fromAcc.getBalance();
 			double toBal = toAcc.getBalance();
 			double amount = pendingTransfer.getAmount();
@@ -93,6 +101,16 @@ public class TransactionService {
 			}
 			
 			con.commit();
+			return ret;
+		}
+	}
+	
+	public String declineTransfer(int accountId) throws SQLException {
+		try(Connection con = ConnectionUtil.getConnection()) {
+			String ret = "";
+			if (transactionDAO.declineTransfer(accountId, con)) {
+				ret = "You have declined this transfer";
+			}
 			return ret;
 		}
 	}

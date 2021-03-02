@@ -14,6 +14,5 @@ public interface TransactionDAO {
 	public boolean requestTransfer(String fromAccount, String toAccount, double amount, int toAccountId, Connection con) throws SQLException;
 	public ArrayList<PendingTransfer> checkPendingTransfers(int accountId, Connection con) throws SQLException;
 	public PendingTransfer approveTransfer(int transferId, Connection con) throws SQLException;
-	//approvetransfer
-	//declinetransfer
+	public boolean declineTransfer (int transferId, Connection con) throws SQLException;
 }
