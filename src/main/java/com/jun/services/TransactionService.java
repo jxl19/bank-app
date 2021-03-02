@@ -70,5 +70,31 @@ public class TransactionService {
 			return pendingTransfer;
 		}
 	}
+	
+	public String approveTransfer(int accountId) throws SQLException, InvalidBalanceException{
+		try(Connection con = ConnectionUtil.getConnection()) {
+			con.setAutoCommit(false);
+			String ret = "";
+			PendingTransfer pendingTransfer = transactionDAO.approveTransfer(accountId, con);
+
+			String fromAccId = pendingTransfer.getFromAccountId();
+			String toAccId = pendingTransfer.getToAccountId();
+			Account fromAcc = cardDAO.getCardInfo(fromAccId, con);
+			Account toAcc = cardDAO.getCardInfo(toAccId, con);
+			double fromBal = fromAcc.getBalance();
+			double toBal = toAcc.getBalance();
+			double amount = pendingTransfer.getAmount();
+			
+			if(fromBal < amount) {
+				throw new InvalidBalanceException(fromAccId + "does not have enough to transfer."); 
+			} else {
+				transactionDAO.transferBalance(fromAccId, toAccId, fromBal, toBal, amount, con);
+				ret = "Balance has been successfully transferred.";
+			}
+			
+			con.commit();
+			return ret;
+		}
+	}
 
 }

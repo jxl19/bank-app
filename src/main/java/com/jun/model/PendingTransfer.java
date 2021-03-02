@@ -8,12 +8,14 @@ public class PendingTransfer {
 	private String toAccountId;
 	private double amount;
 	private boolean pending;
-	public PendingTransfer(String fromAccountId, String toAccountId, double amount, boolean pending) {
+	private int transferId;
+	public PendingTransfer(String fromAccountId, String toAccountId, double amount, boolean pending, int transferId) {
 		super();
 		this.fromAccountId = fromAccountId;
 		this.toAccountId = toAccountId;
 		this.amount = amount;
 		this.pending = pending;
+		this.transferId = transferId;
 	}
 	public String getFromAccountId() {
 		return fromAccountId;
@@ -39,9 +41,15 @@ public class PendingTransfer {
 	public void setPending(boolean pending) {
 		this.pending = pending;
 	}
+	public int getTransferId() {
+		return transferId;
+	}
+	public void setTransferId(int transferId) {
+		this.transferId = transferId;
+	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(amount, fromAccountId, pending, toAccountId);
+		return Objects.hash(amount, fromAccountId, pending, toAccountId, transferId);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -54,12 +62,12 @@ public class PendingTransfer {
 		PendingTransfer other = (PendingTransfer) obj;
 		return Double.doubleToLongBits(amount) == Double.doubleToLongBits(other.amount)
 				&& Objects.equals(fromAccountId, other.fromAccountId) && pending == other.pending
-				&& Objects.equals(toAccountId, other.toAccountId);
+				&& Objects.equals(toAccountId, other.toAccountId) && transferId == other.transferId;
 	}
 	@Override
 	public String toString() {
-		return "PendingTransfers [fromAccountId=" + fromAccountId + ", toAccountId=" + toAccountId + ", amount="
-				+ amount + ", pending=" + pending + "]";
+		return "PendingTransfer [fromAccountId=" + fromAccountId + ", toAccountId=" + toAccountId + ", amount=" + amount
+				+ ", pending=" + pending + ", transferId=" + transferId + "]";
 	}
 	
 }

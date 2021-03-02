@@ -83,7 +83,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 	@Override
 	public ArrayList<PendingTransfer> checkPendingTransfers(int accountId, Connection con) throws SQLException {
 		ArrayList<PendingTransfer> pendingTransfer = new ArrayList<>();
-		String sql = "SELECT * FROM bank.pending_transfers WHERE account_id = ?";
+		String sql = "SELECT * FROM bank.pending_transfers WHERE account_id = ? AND pending = TRUE";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, accountId);
 		ResultSet rs = ps.executeQuery();
@@ -93,10 +93,34 @@ public class TransactionDAOImpl implements TransactionDAO {
 			String toAccountId = rs.getString("to_account");
 			double amount = rs.getDouble("amount");
 			boolean pending = rs.getBoolean("pending");
-			
-			pendingTransfer.add(new PendingTransfer(fromAccountId, toAccountId, amount, pending));
+			int transferId = rs.getInt("transfer_id");
+			pendingTransfer.add(new PendingTransfer(fromAccountId, toAccountId, amount, pending, transferId));
 			
 		}
+		return pendingTransfer;
+	}
+
+	@Override
+	public PendingTransfer approveTransfer(int transferId, Connection con) throws SQLException {
+		PendingTransfer pendingTransfer = null;
+		String updateSql = "UPDATE bank.pending_transfers SET pending = FALSE WHERE transfer_id = ?";
+		String sql = "SELECT * FROM bank.pending_transfers WHERE transfer_id = ?";
+		PreparedStatement ps = con.prepareStatement(updateSql);
+		ps.setInt(1, transferId);
+		ps.executeUpdate();
+		
+		PreparedStatement ps1 = con.prepareStatement(sql);
+		ps1.setInt(1, transferId);
+		ResultSet rs = ps1.executeQuery();
+		if(rs.next()) {
+			String fromAccountId = rs.getString("from_account");
+			String toAccountId = rs.getString("to_account");
+			double amount = rs.getDouble("amount");
+			boolean pending = rs.getBoolean("pending");
+			int tId = rs.getInt("transfer_id");
+			pendingTransfer = new PendingTransfer(fromAccountId, toAccountId, amount, pending, tId);
+		}
+		System.out.println("inside impl" + pendingTransfer);
 		return pendingTransfer;
 	}
 

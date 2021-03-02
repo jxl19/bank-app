@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import com.jun.exceptions.InvalidBalanceException;
 import com.jun.model.PendingTransfer;
 import com.jun.services.TransactionService;
 
@@ -18,8 +19,6 @@ public class PendingTransferMenu implements Menu{
 
 	@Override
 	public void display() {
-		System.out.println("=== Pending Transfers ===");
-		System.out.println("Please select a pending transfer to review");
 		ArrayList<PendingTransfer> pendingTransfers = new ArrayList<>();
 		int choice = 0;
 		do {
@@ -28,6 +27,8 @@ public class PendingTransferMenu implements Menu{
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
 			}
+			System.out.println("=== Pending Transfers ===");
+			System.out.println("Please select a pending transfer to review");
 			StringBuilder sb = new StringBuilder();
 			sb.append("1.)Exit");
 			sb.append(System.getProperty("line.separator"));
@@ -54,8 +55,10 @@ public class PendingTransferMenu implements Menu{
 					break;
 				default:
 					int selected = 0;
-					System.out.println("From account: " + pendingTransfers.get(choice - 2).getFromAccountId());
-					System.out.println("Amount transfering into your account: " + pendingTransfers.get(choice - 2).getAmount());
+					PendingTransfer currentAccount = pendingTransfers.get(choice - 2);
+					System.out.println("=== REVIEWING TRANSFER ===");
+					System.out.println("From account: " + currentAccount.getFromAccountId());
+					System.out.println("Amount transfering into your account: " + currentAccount.getAmount());
 					System.out.println("1.) Exit");
 					System.out.println("2.) Approve");
 					System.out.println("3.) Deny");
@@ -68,6 +71,14 @@ public class PendingTransferMenu implements Menu{
 							break;
 						case 2:
 							System.out.println("approved");
+						try {
+							String approvedTransaction = transactionService.approveTransfer(currentAccount.getTransferId());
+							System.out.println(approvedTransaction);
+							selected = 1;
+							break;
+						} catch (SQLException | InvalidBalanceException e) {
+							System.out.println(e.getMessage());
+						} 
 							selected = 1;
 							break;
 						case 3:
