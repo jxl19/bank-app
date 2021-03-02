@@ -27,9 +27,10 @@ public class CustomerMenu implements Menu{
 			System.out.println("=== CUSTOMER MENU ===");
 			System.out.println("Please select an option below: ");
 			System.out.println("1.) Select Bank Account");
-			System.out.println("2.) Apply for new Checkings account");
-			System.out.println("3.) Apply for new Savings account");
-			System.out.println("4.) Log Out");
+			System.out.println("2.) Pending Transfers");
+			System.out.println("3.) Apply for new Checkings account");
+			System.out.println("4.) Apply for new Savings account");
+			System.out.println("5.) Log Out");
 			
 			try {
 				choice = Integer.parseInt(Menu.sc.nextLine());
@@ -44,16 +45,22 @@ public class CustomerMenu implements Menu{
 					}
 					break;
 				case 2: 
+					System.out.println("Checking transfers");
+					//new menu or just handle it here?
+					PendingTransferMenu ptm = new PendingTransferMenu();
+					ptm.display();
+					break;
+				case 3: 
 					System.out.println("Applying for checkings account..");
 					AccountApplicationMenu caam = new AccountApplicationMenu(true);
 					caam.display();
 					break;
-				case 3: 
+				case 4: 
 					System.out.println("Applying for savings account..");
 					AccountApplicationMenu saam = new AccountApplicationMenu(false);
 					saam.display();
 					break;
-				case 4:
+				case 5:
 					System.out.println("Logging out");
 					MainMenu mm = new MainMenu();
 					mm.display();

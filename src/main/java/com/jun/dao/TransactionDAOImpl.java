@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.jun.exceptions.InvalidBalanceException;
+import com.jun.model.PendingTransfer;
 import com.jun.model.Transaction;
 
 public class TransactionDAOImpl implements TransactionDAO {
@@ -76,6 +78,26 @@ public class TransactionDAOImpl implements TransactionDAO {
 		ps.executeUpdate();
 		
 		return true;
+	}
+
+	@Override
+	public ArrayList<PendingTransfer> checkPendingTransfers(int accountId, Connection con) throws SQLException {
+		ArrayList<PendingTransfer> pendingTransfer = new ArrayList<>();
+		String sql = "SELECT * FROM bank.pending_transfers WHERE account_id = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, accountId);
+		ResultSet rs = ps.executeQuery();
+		
+		while(rs.next()) {
+			String fromAccountId = rs.getString("from_account");
+			String toAccountId = rs.getString("to_account");
+			double amount = rs.getDouble("amount");
+			boolean pending = rs.getBoolean("pending");
+			
+			pendingTransfer.add(new PendingTransfer(fromAccountId, toAccountId, amount, pending));
+			
+		}
+		return pendingTransfer;
 	}
 
 
