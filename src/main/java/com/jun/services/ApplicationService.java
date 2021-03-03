@@ -18,18 +18,24 @@ import com.jun.util.ConnectionUtil;
 public class ApplicationService {
 	
 	public ApplicationDAO applicationDAO;
-	public CustomerDAO customerDAO;
+//	public CustomerDAO customerDAO;
 	public LogDAO logDAO;
 
 	public ApplicationService() {
 		this.applicationDAO = new ApplicationDAOImpl();
-		this.customerDAO = new CustomerDAOImpl();
+//		this.customerDAO = new CustomerDAOImpl();
 		this.logDAO = new LogDAOImpl();
+	}
+	
+	public ApplicationService(ApplicationDAO applicationDAO, LogDAO logDAO) {
+		this.applicationDAO = applicationDAO;
+//		this.customerDAO = customerDAO;
+		this.logDAO = logDAO;
 	}
 	
 	private static Logger log = Logger.getLogger(ApplicationService.class);
 	
-	public String applyForNewAccount(int loginId, double initialBalance, boolean isCheckingAccount) throws SQLException, InvalidBalanceException {
+	public String applyForNewAccount(int loginId, double initialBalance, boolean isCheckingAccount) throws InvalidBalanceException, SQLException {
 		try (Connection con = ConnectionUtil.getConnection()) {
 			String action = "";
 			if (initialBalance < 0) {
@@ -38,14 +44,14 @@ public class ApplicationService {
 				log.error(loginId + " attempted to apply for a negative balance account");
 				throw new InvalidBalanceException("You cannot start a bank account with a negative balance!");
 			}
-			Customer cust = customerDAO.getCustomerBalance(loginId, con);
-			double custBal = cust.getBalance();
-			if (custBal < initialBalance) {
-				action = "failed account application - starting balance too high";
-				logDAO.logUserAction(loginId, action, con);
-				log.error(loginId + " attempted to apply for an account with too high a balance");
-				throw new InvalidBalanceException("You only have " + custBal + " on hand. You cannot start an account with " + initialBalance + ".");
-			}
+//			Customer cust = customerDAO.getCustomerBalance(loginId, con);
+//			double custBal = cust.getBalance();
+//			if (custBal < initialBalance) {
+//				action = "failed account application - starting balance too high";
+//				logDAO.logUserAction(loginId, action, con);
+//				log.error(loginId + " attempted to apply for an account with too high a balance");
+//				throw new InvalidBalanceException("You only have " + custBal + " on hand. You cannot start an account with " + initialBalance + ".");
+//			}
 			applicationDAO.applyForNewBankAccount(loginId, initialBalance, isCheckingAccount, con);
 			String accountType = isCheckingAccount ? "checkings" : "savings";
 			action = "applied for new " + accountType+ " account";

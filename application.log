@@ -1,0 +1,136 @@
+03-02-2021 19:03:17 {DEBUG} [com.jun.main.Application] debugging 
+03-02-2021 19:03:17 {INFO} [com.jun.main.Application] test 
+03-02-2021 19:06:34 {DEBUG} [com.jun.main.Application] testing 
+03-02-2021 19:06:34 {INFO} [com.jun.main.Application] hello world 
+03-02-2021 19:18:25 {INFO} [com.jun.services.LoginService] user1 Successfully logged on 
+03-02-2021 19:19:44 {ERROR} [com.jun.services.LoginService] invalid login 
+03-02-2021 19:34:07 {INFO} [com.jun.services.LoginService] user1 successfully logged on 
+03-02-2021 19:34:17 {INFO} [com.jun.services.LoginService] user1 successfully logged on 
+03-02-2021 19:36:34 {ERROR} [com.jun.services.LoginService] Error logging in 
+03-02-2021 20:12:39 {INFO} [com.jun.services.LoginService] user1 successfully logged on 
+03-02-2021 20:12:48 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:12:48 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:12:49 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:12:49 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:12:49 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:12:49 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:12:52 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:13:01 {INFO} [com.jun.services.TransactionService] 3 successfully transffered balance 
+03-02-2021 20:13:01 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:13:01 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:13:07 {INFO} [com.jun.services.TransactionService] 3 successfully transffered balance 
+03-02-2021 20:13:07 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:13:07 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:13:17 {INFO} [com.jun.services.TransactionService] Transfer request pending 
+03-02-2021 20:13:17 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:13:26 {INFO} [com.jun.services.LoginService] user2 successfully logged on 
+03-02-2021 20:13:27 {INFO} [com.jun.services.TransactionService] User 4 checking pending transfers 
+03-02-2021 20:13:31 {INFO} [com.jun.services.TransactionService] Transfer id: 14 Successfully transferred 
+03-02-2021 20:13:31 {INFO} [com.jun.services.TransactionService] User 4 checking pending transfers 
+03-02-2021 20:13:43 {INFO} [com.jun.services.ApplicationService] 4 successfully applied for an account 
+03-02-2021 20:13:57 {INFO} [com.jun.services.ApplicationService] 4 successfully applied for an account 
+03-02-2021 20:14:00 {INFO} [com.jun.services.LoginService] admin successfully logged on 
+03-02-2021 20:14:04 {INFO} [com.jun.services.EmployeeService] 3 successfully got a log of transactions 
+03-02-2021 20:21:21 {INFO} [com.jun.services.LoginService] admin successfully logged on 
+03-02-2021 20:21:29 {INFO} [com.jun.services.EmployeeService] Application was not found for review 
+03-02-2021 20:21:31 {INFO} [com.jun.services.EmployeeService] Application 22 no longer pending 
+03-02-2021 20:21:31 {INFO} [com.jun.services.EmployeeService] Application was not found for review 
+03-02-2021 20:21:35 {INFO} [com.jun.services.EmployeeService] Application 22 no longer pending 
+03-02-2021 20:21:35 {INFO} [com.jun.services.EmployeeService] Application was not found for review 
+03-02-2021 20:23:10 {INFO} [com.jun.services.EmployeeService] Application was not found for review 
+03-02-2021 20:23:11 {INFO} [com.jun.services.EmployeeService] Application was not found for review 
+03-02-2021 20:27:30 {INFO} [com.jun.services.LoginService] user1 successfully logged on 
+03-02-2021 20:27:33 {INFO} [com.jun.services.ApplicationService] 3 successfully applied for an account 
+03-02-2021 20:27:36 {INFO} [com.jun.services.ApplicationService] 3 successfully applied for an account 
+03-02-2021 20:27:39 {INFO} [com.jun.services.ApplicationService] 3 successfully applied for an account 
+03-02-2021 20:27:42 {INFO} [com.jun.services.LoginService] admin successfully logged on 
+03-02-2021 20:27:55 {INFO} [com.jun.services.EmployeeService] Application was not found for review 
+03-02-2021 20:30:00 {ERROR} [com.jun.services.LoginService] Error logging in 
+03-02-2021 20:30:03 {INFO} [com.jun.services.LoginService] user2 successfully logged on 
+03-02-2021 20:30:06 {INFO} [com.jun.services.ApplicationService] 4 successfully applied for an account 
+03-02-2021 20:30:08 {INFO} [com.jun.services.LoginService] admin successfully logged on 
+03-02-2021 20:30:15 {INFO} [com.jun.services.EmployeeService] Application was not found for review 
+03-02-2021 20:32:37 {INFO} [com.jun.services.LoginService] user2 successfully logged on 
+03-02-2021 20:32:47 {INFO} [com.jun.services.ApplicationService] 4 successfully applied for an account 
+03-02-2021 20:32:50 {INFO} [com.jun.services.LoginService] admin successfully logged on 
+03-02-2021 20:32:54 {INFO} [com.jun.services.EmployeeService] Application was not found for review 
+03-02-2021 20:32:58 {INFO} [com.jun.services.EmployeeService] Application 27 no longer pending 
+03-02-2021 20:32:58 {INFO} [com.jun.services.EmployeeService] Application was not found for review 
+03-02-2021 20:33:40 {INFO} [com.jun.services.LoginService] user2 successfully logged on 
+03-02-2021 20:33:44 {INFO} [com.jun.services.ApplicationService] 4 successfully applied for an account 
+03-02-2021 20:33:49 {INFO} [com.jun.services.LoginService] admin successfully logged on 
+03-02-2021 20:33:51 {INFO} [com.jun.services.EmployeeService] Application was not found for review 
+03-02-2021 20:34:19 {INFO} [com.jun.services.LoginService] user2 successfully logged on 
+03-02-2021 20:34:22 {INFO} [com.jun.services.ApplicationService] 4 successfully applied for an account 
+03-02-2021 20:34:25 {INFO} [com.jun.services.LoginService] admin successfully logged on 
+03-02-2021 20:37:32 {INFO} [com.jun.services.LoginService] admin successfully logged on 
+03-02-2021 20:37:37 {INFO} [com.jun.services.EmployeeService] Application was not found for review 
+03-02-2021 20:38:37 {INFO} [com.jun.services.LoginService] user1 successfully logged on 
+03-02-2021 20:38:38 {INFO} [com.jun.services.ApplicationService] 3 successfully applied for an account 
+03-02-2021 20:38:41 {INFO} [com.jun.services.LoginService] admin successfully logged on 
+03-02-2021 20:38:44 {INFO} [com.jun.services.EmployeeService] Application was not found for review 
+03-02-2021 20:39:31 {INFO} [com.jun.services.LoginService] user1 successfully logged on 
+03-02-2021 20:39:33 {INFO} [com.jun.services.ApplicationService] 3 successfully applied for an account 
+03-02-2021 20:39:37 {INFO} [com.jun.services.LoginService] admin successfully logged on 
+03-02-2021 20:39:41 {INFO} [com.jun.services.EmployeeService] Application was not found for review 
+03-02-2021 20:40:19 {INFO} [com.jun.services.LoginService] user1 successfully logged on 
+03-02-2021 20:40:23 {INFO} [com.jun.services.ApplicationService] 3 successfully applied for an account 
+03-02-2021 20:40:25 {INFO} [com.jun.services.LoginService] admin successfully logged on 
+03-02-2021 20:40:27 {INFO} [com.jun.services.EmployeeService] Application was not found for review 
+03-02-2021 20:41:44 {INFO} [com.jun.services.LoginService] user1 successfully logged on 
+03-02-2021 20:41:45 {INFO} [com.jun.services.ApplicationService] 3 successfully applied for an account 
+03-02-2021 20:41:50 {INFO} [com.jun.services.LoginService] admin successfully logged on 
+03-02-2021 20:41:52 {INFO} [com.jun.services.EmployeeService] Application was not found for review 
+03-02-2021 20:42:35 {INFO} [com.jun.services.LoginService] user2 successfully logged on 
+03-02-2021 20:42:37 {INFO} [com.jun.services.ApplicationService] 4 successfully applied for an account 
+03-02-2021 20:42:39 {INFO} [com.jun.services.LoginService] admin successfully logged on 
+03-02-2021 20:42:42 {INFO} [com.jun.services.EmployeeService] Application was not found for review 
+03-02-2021 20:49:55 {INFO} [com.jun.services.LoginService] user1 successfully logged on 
+03-02-2021 20:49:56 {INFO} [com.jun.services.TransactionService] User 3 checking pending transfers 
+03-02-2021 20:49:58 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:49:58 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:49:58 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:49:58 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:49:58 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:49:58 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:49:58 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:49:58 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:49:58 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:49:59 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:49:59 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:49:59 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:49:59 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:49:59 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:49:59 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:49:59 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:49:59 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:53:32 {INFO} [com.jun.services.LoginService] user1 successfully logged on 
+03-02-2021 20:53:33 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:53:33 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:53:33 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:53:33 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:53:34 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 20:53:34 {INFO} [com.jun.services.AccountService] User 3 successfully got account information 
+03-02-2021 21:55:21 {INFO} [com.jun.services.AccountService] User 1 successfully got account information 
+03-02-2021 21:55:21 {ERROR} [com.jun.services.AccountService] Account 5432123456789873 was not found 
+03-03-2021 08:10:21 {INFO} [com.jun.services.AccountService] User 1 successfully got account information 
+03-03-2021 08:10:21 {ERROR} [com.jun.services.AccountService] Account 5432123456789873 was not found 
+03-03-2021 08:49:25 {INFO} [com.jun.services.AccountService] User 1 successfully got account information 
+03-03-2021 08:49:25 {ERROR} [com.jun.services.AccountService] Account 5432123456789873 was not found 
+03-03-2021 08:53:27 {INFO} [com.jun.services.AccountService] User 1 successfully got account information 
+03-03-2021 08:53:27 {ERROR} [com.jun.services.AccountService] Account 5432123456789873 was not found 
+03-03-2021 09:00:57 {INFO} [com.jun.services.LoginService] user1 successfully logged on 
+03-03-2021 09:08:02 {INFO} [com.jun.services.LoginService] user1 successfully logged on 
+03-03-2021 09:08:02 {ERROR} [com.jun.services.LoginService] Error logging in 
+03-03-2021 09:22:13 {INFO} [com.jun.services.ApplicationService] 1 successfully applied for an account 
+03-03-2021 09:24:54 {INFO} [com.jun.services.ApplicationService] 1 successfully applied for an account 
+03-03-2021 09:25:44 {INFO} [com.jun.services.ApplicationService] 1 successfully applied for an account 
+03-03-2021 09:25:44 {ERROR} [com.jun.services.ApplicationService] 1 attempted to apply for a negative balance account 
+03-03-2021 09:46:43 {INFO} [com.jun.services.ApplicationService] 1 successfully applied for an account 
+03-03-2021 09:46:43 {ERROR} [com.jun.services.ApplicationService] 1 attempted to apply for a negative balance account 
+03-03-2021 09:46:53 {INFO} [com.jun.services.AccountService] User 1 successfully got account information 
+03-03-2021 09:46:53 {ERROR} [com.jun.services.AccountService] Account 5432123456789873 was not found 
+03-03-2021 09:46:53 {INFO} [com.jun.services.LoginService] user1 successfully logged on 
+03-03-2021 09:46:53 {ERROR} [com.jun.services.LoginService] Error logging in 
+03-03-2021 09:46:53 {INFO} [com.jun.services.ApplicationService] 1 successfully applied for an account 
+03-03-2021 09:46:53 {ERROR} [com.jun.services.ApplicationService] 1 attempted to apply for a negative balance account 

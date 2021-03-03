@@ -22,6 +22,11 @@ public class LoginService {
 		this.logDAO = new LogDAOImpl();
 	}
 	
+	public LoginService(LoginDAO loginDAO, LogDAO logDAO) {
+		this.loginDAO = loginDAO;
+		this.logDAO = logDAO;
+	}
+	
 	private static Logger log = Logger.getLogger(LoginService.class);
 	
 	public Login authenticateUser(String username, String password) throws UserNotFoundException, SQLException {

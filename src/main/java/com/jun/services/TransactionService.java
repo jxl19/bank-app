@@ -12,9 +12,9 @@ import com.jun.dao.LogDAO;
 import com.jun.dao.LogDAOImpl;
 import com.jun.dao.TransactionDAO;
 import com.jun.dao.TransactionDAOImpl;
-import com.jun.exceptions.InvalidAccountException;
 import com.jun.exceptions.InvalidBalanceException;
 import com.jun.exceptions.InvalidTransferRequestException;
+import com.jun.exceptions.UserNotFoundException;
 import com.jun.model.Account;
 import com.jun.model.PendingTransfer;
 import com.jun.model.Transaction;
@@ -51,7 +51,7 @@ public class TransactionService {
 		}
 	}
 	
-	public String transferBalanceToAccount(int userId, String toAccount, String fromAccount, double amount) throws SQLException, InvalidBalanceException, InvalidTransferRequestException, InvalidAccountException {
+	public String transferBalanceToAccount(int userId, String toAccount, String fromAccount, double amount) throws SQLException, InvalidBalanceException, InvalidTransferRequestException, UserNotFoundException {
 		if (toAccount == fromAccount) {
 			log.warn(userId + "Attempted to transfer to same account");
 			throw new InvalidTransferRequestException("You cannot transfer to yourself!");
@@ -62,7 +62,7 @@ public class TransactionService {
 			Account toAcc = accountDAO.getCardInfo(toAccount, con);
 			if (toAcc == null) {
 				log.warn("This account does not exist");
-				throw new InvalidAccountException("This account this not exist. Please try again.");
+				throw new UserNotFoundException("This account this not exist. Please try again.");
 			}
 			Account fromAcc = accountDAO.getCardInfo(fromAccount, con);
 			

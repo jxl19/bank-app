@@ -22,9 +22,13 @@ public class AccountService {
 		this.logDAO = new LogDAOImpl();
 	}
 	
+	public AccountService(AccountDAO accountDAO) {
+		this.accountDAO = accountDAO;
+	}
+	
 	private static Logger log = Logger.getLogger(AccountService.class);
 
-	public Account getAccountInfo(String accountNum, int userId) throws SQLException, CardNotFoundException{
+	public Account getAccountInfo(String accountNum, int userId) throws CardNotFoundException, SQLException{
 		try (Connection con = ConnectionUtil.getConnection()) {
 			Account card = accountDAO.getCardInfo(accountNum, con);
 			
