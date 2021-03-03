@@ -22,17 +22,14 @@ public class EmployeeMenu implements Menu{
 			
 			switch (choice) {
 				case 1: 
-					System.out.println("checking user account");
 					ReviewCustomerMenu rcm = new ReviewCustomerMenu();
 					rcm.display();
 					break;
 				case 2: 
-					System.out.println("checking new applications");
 					ReviewApplicationMenu ram = new ReviewApplicationMenu();
 					ram.display();
 					break;
 				case 3:
-					System.out.println("exiting employee");
 					MainMenu mm = new MainMenu();
 					mm.display();
 				default:

@@ -73,7 +73,7 @@ public class PendingTransferMenu implements Menu{
 						case 2:
 							System.out.println("approved");
 						try {
-							String approvedTransaction = transactionService.approveTransfer(currentAccount.getTransferId());
+							String approvedTransaction = transactionService.approveTransfer(currentAccount.getTransferId(), MainMenu.loginId);
 							System.out.println(approvedTransaction);
 							selected = 1;
 							break;
@@ -85,7 +85,7 @@ public class PendingTransferMenu implements Menu{
 						case 3:
 							System.out.println("declined");
 							try {
-								String approvedTransaction = transactionService.declineTransfer(currentAccount.getTransferId());
+								String approvedTransaction = transactionService.declineTransfer(currentAccount.getTransferId(), MainMenu.loginId);
 								System.out.println(approvedTransaction);
 								selected = 1;
 								break;

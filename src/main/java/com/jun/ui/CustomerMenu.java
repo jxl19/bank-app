@@ -74,6 +74,7 @@ public class CustomerMenu implements Menu{
 	void getCustAccount(int id) throws UserNotFoundException, SQLException {
 		
 		List<String> ids = new ArrayList<>();
+		//TODO: update to just use accountservice
 		ids = customerService.getCustomerCardNumber(id);
 		
 		int choice = 0;

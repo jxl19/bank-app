@@ -46,7 +46,7 @@ public class TransactionMenu implements Menu {
 					} else { 
 						if(transactionType != "Transfer") {
 							try {
-								transactionService.updateBalance(cardNum, transactionType, amount);
+								transactionService.transferBalance(cardNum, transactionType, amount, userId);
 								try {
 									System.out.println("the updated balance is : " + cardService.getAccountInfo(cardNum, userId).getBalance());
 									AccountMenu am = new AccountMenu(cardNum, userId);
@@ -62,6 +62,7 @@ public class TransactionMenu implements Menu {
 								//check if valid account somewhere?
 								System.out.println("Please enter account number that you want to transfer to");
 								String toAcc = Menu.sc.nextLine();
+								System.out.println("userid" + userId);
 								String transfer = transactionService.transferBalanceToAccount(userId, toAcc, cardNum, amount);
 								System.out.println(transfer);
 								AccountMenu am = new AccountMenu(cardNum, userId);

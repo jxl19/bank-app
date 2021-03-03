@@ -13,6 +13,7 @@ public class AccountMenu implements Menu{
 	public AccountService cardService;
 	public TransactionService transactionService;
 	public AccountMenu(String accountId, int userId) {
+		this.userId = userId;
 		this.accountId = accountId;
 		this.cardService = new AccountService();
 	}
@@ -40,7 +41,7 @@ public class AccountMenu implements Menu{
 			} catch(NumberFormatException e) {
 			}
 			
-			
+			System.out.println("user id inside accme" + userId);
 			switch (choice) {
 				case 1: 
 					System.out.println("Deposit menu");

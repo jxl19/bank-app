@@ -6,14 +6,14 @@ import com.jun.exceptions.ApplicationNotFoundException;
 import com.jun.exceptions.InvalidApplicationException;
 import com.jun.exceptions.InvalidBalanceException;
 import com.jun.model.ApplicationReview;
-import com.jun.services.ReviewApplicationService;
+import com.jun.services.EmployeeService;
 
 public class ReviewApplicationMenu implements Menu {
 
-	public ReviewApplicationService reviewApplicationService;
+	public EmployeeService employeeService;
 
 	public ReviewApplicationMenu() {
-		this.reviewApplicationService = new ReviewApplicationService();
+		this.employeeService = new EmployeeService();
 	}
 
 	public void display() {
@@ -22,7 +22,7 @@ public class ReviewApplicationMenu implements Menu {
 
 		do {
 			try {
-				ar = reviewApplicationService.reviewApplications();
+				ar = employeeService.reviewApplications();
 			} catch (ApplicationNotFoundException | SQLException | NullPointerException e) {
 				System.out.println(e.getMessage());
 			}
@@ -51,7 +51,7 @@ public class ReviewApplicationMenu implements Menu {
 			case 2:
 				if (ar != null) {
 					try {
-						reviewApplicationService.approveAccount(ar.getLoginId(), ar.getAppId(), ar.getInitialBalance(), ar.isCheckingAccount());
+						employeeService.approveAccount(ar.getLoginId(), ar.getAppId(), ar.getInitialBalance(), ar.isCheckingAccount());
 						System.out.println("Approved application of..");
 					} catch (InvalidBalanceException | InvalidApplicationException |SQLException e) {
 						System.out.println(e.getMessage());
@@ -64,7 +64,7 @@ public class ReviewApplicationMenu implements Menu {
 			case 3:
 				if (ar != null) {
 					try {
-						reviewApplicationService.rejectAccount(ar.getAppId());
+						employeeService.rejectAccount(ar.getAppId());
 					} catch (SQLException e) {
 						System.out.println(e.getMessage());
 					} 

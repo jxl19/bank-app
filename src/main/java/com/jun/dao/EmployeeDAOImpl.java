@@ -10,7 +10,7 @@ import com.jun.exceptions.InvalidApplicationException;
 import com.jun.exceptions.InvalidBalanceException;
 import com.jun.model.ApplicationReview;
 
-public class ReviewApplicationDAOImpl implements ReviewApplicationDAO {
+public class EmployeeDAOImpl implements EmployeeDAO {
 
 	@Override
 	public ApplicationReview reviewCustomerApplication(Connection con) throws SQLException{

@@ -27,8 +27,6 @@ public class AccountService {
 			if (card == null) {
 				throw new CardNotFoundException("The card id: " + accountNum +" does not exist.");
 			}
-			String action = "got account information";
-			logDAO.logUserAction(userId, action, con);
 			return card;
 		}
 	}

@@ -80,12 +80,13 @@ public class CustomerLookupMenu implements Menu {
 	void getCustLogs() throws SQLException {
 		ArrayList<TransactionLogs> at = employeeService.getTransactions(userId);
 		at.forEach(log -> {
-			System.out.println(log.getTransactionTime() + " User id " + log.getUserId() + log.getAction());
+			System.out.println(log.getTransactionTime() + " User id " + log.getUserId() + " " + log.getAction());
 		});
 	}
 
 	void getCustAccount() throws UserNotFoundException, SQLException {
 		List<String> ids = new ArrayList<>();
+		//TODO: update accountservice to just return all accounts
 		ids = customerService.getCustomerCardNumber(userId);
 		Account acc = null;
 		String accountType = "";
