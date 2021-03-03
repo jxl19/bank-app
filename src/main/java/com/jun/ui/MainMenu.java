@@ -2,6 +2,8 @@ package com.jun.ui;
 
 import java.sql.SQLException;
 
+import com.jun.exceptions.InvalidEmailException;
+import com.jun.exceptions.UserAlreadyExistsException;
 import com.jun.exceptions.UserNotFoundException;
 import com.jun.model.Login;
 import com.jun.services.LoginService;
@@ -17,9 +19,28 @@ public class MainMenu implements Menu {
 	}
 
 	public void display() {
-		System.out.println("=== Welcome to Bank of Jun! ===");
-		//TODO: need menu here to either create account or login
-		getAccountType();
+		int choice = 0;
+		do {
+			System.out.println("=== Welcome to Bank of Jun! ===");
+			System.out.println("Select 1 to login");
+			System.out.println("Select 2 to create a user account");
+			try {
+				choice = Integer.parseInt(Menu.sc.nextLine());
+			} catch (NumberFormatException e) {};
+			
+			switch (choice) {
+				case 1: 
+					getAccountType();
+					break;
+				case 2:
+					createUserAccount();
+					System.out.println("create account");
+					System.out.println("account successfully created");
+					break;
+				case 3:
+					break;
+			}
+		} while (choice != 1);
 	}
 	
 	private void getAccountType() {
@@ -47,6 +68,24 @@ public class MainMenu implements Menu {
 				em.display();
 			} else cm.display();
 		}
+	}
+	
+	private void createUserAccount() {
+		System.out.println("Please Enter your desired username:");
+		String un = Menu.sc.nextLine();
+		System.out.println("Please Enter your password:");
+		String pw = Menu.sc.nextLine();
+		System.out.println("Please enter your first name:");
+		String firstName = Menu.sc.nextLine();
+		System.out.println("Please enter your last name:");
+		String lastName = Menu.sc.nextLine();
+		System.out.println("Please enter your email:");
+		String email = Menu.sc.nextLine();
+		try {
+			loginService.createUser(un, pw, firstName, lastName, email, false);
+		} catch (InvalidEmailException  | UserAlreadyExistsException |SQLException e) {
+			System.out.println(e.getMessage());
+		} 
 	}
 	
 }

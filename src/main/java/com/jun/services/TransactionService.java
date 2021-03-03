@@ -39,6 +39,8 @@ public class TransactionService {
 			log.warn("User " + userId + "attempted to transfer a negative balance");
 			throw new InvalidBalanceException("You cannot input a negative balance!");
 		}
+		//maybe break up withdraw and deposit
+		int count = 0;
 		try (Connection con = ConnectionUtil.getConnection()) {
 			Transaction transaction = transactionDAO.updateBalance(cardNum, transactionType, amount, con);
 			if (transaction == null) {

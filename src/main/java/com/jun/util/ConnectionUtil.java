@@ -12,7 +12,6 @@ public class ConnectionUtil {
 	private static Logger log = Logger.getLogger(ConnectionUtil.class);
 	
 	public static Connection getConnection() throws SQLException{
-		System.out.println("test");
 		try {
 			DriverManager.registerDriver(new Driver()); 
 			

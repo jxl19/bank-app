@@ -39,9 +39,9 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return cust;
 	}
 
+	//TODO: probably delete
 	@Override
 	public Customer getCustomerBalance(int userId, Connection con) throws SQLException {
-		//the job of this is just to give us the balance so our service can check if later on if our createnewacc can be valid
 		Customer cust = null;
 		double custBal = 0;
 		String custSql = "SELECT * FROM bank.customer WHERE login_id = ?";
@@ -56,6 +56,18 @@ public class CustomerDAOImpl implements CustomerDAO {
 		}
 
 		return cust;
+	}
+
+	@Override
+	public boolean checkValidUnsername(String username, Connection con) throws SQLException {
+		String sql = "SELECT * FROM bank.login WHERE username = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, username);
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			return false;
+		}
+		return true;
 	}
 
 }

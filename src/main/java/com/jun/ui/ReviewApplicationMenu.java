@@ -19,7 +19,7 @@ public class ReviewApplicationMenu implements Menu {
 	public void display() {
 		int choice = 0;
 		ApplicationReview ar = null;
-		int prevId = -1;
+		int prevId = 0;
 		a: do {
 			try {
 				ar = employeeService.reviewApplications();
@@ -30,9 +30,9 @@ public class ReviewApplicationMenu implements Menu {
 			if (ar.getAppId() == prevId) {
 				break a;
 			}
-			System.out.println("ar outside try" + ar);
 				System.out.println("=== APPLICATION REVIEW ===");
 				System.out.println("Customer Name: " + ar.getFirstName() + " " + ar.getLastName());
+				System.out.println("Customer id: " + ar.getLoginId());
 				System.out.println("Credit Score: " + ar.getCredit());
 				System.out.println("Account starting balance: " + ar.getInitialBalance());
 				System.out.println("Please review the application");
@@ -60,11 +60,11 @@ public class ReviewApplicationMenu implements Menu {
 					} catch (SQLException e) {
 						System.out.println(e.getMessage());
 					}
+					break;
 			default:
 				System.out.println("Invalid choice, try again!");
 			}
 			prevId = ar.getAppId();
 		} while (choice != 1);
-
 	}
 }

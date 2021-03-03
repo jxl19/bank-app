@@ -8,4 +8,5 @@ import com.jun.model.Customer;
 public interface CustomerDAO {
 	public Customer getCustomerById(int userId, Connection con) throws SQLException; 
 	public Customer getCustomerBalance(int userId, Connection con) throws SQLException;
+	public boolean checkValidUnsername(String username, Connection con) throws SQLException;
 }
