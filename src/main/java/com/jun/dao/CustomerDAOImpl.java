@@ -26,9 +26,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 		while (rs.next()) {
 			cards.add(rs.getString("account_no"));
 		}
-		
-		System.out.println("cards" + cards);
-		System.out.println("id" + id);
 		if (cards.size() > 0) {
 			PreparedStatement balPS = con.prepareStatement(custSql);
 			balPS.setInt(1, id);
@@ -37,12 +34,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 			if (balRS.next()) {
 				custBal = balRS.getDouble("cash");
 			}
-			System.out.println("cards" + cards);
-			System.out.println("id" + id);
-			System.out.println("bal" + custBal);
 			cust = new Customer(cards, id, custBal);
 		}
-		System.out.println("cust" + cust);
 		return cust;
 	}
 

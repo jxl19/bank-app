@@ -42,7 +42,7 @@ public class MainMenu implements Menu {
 			isEmployee = login.isEmployee();
 			loginId = login.getLoginId();
 			EmployeeMenu em = new EmployeeMenu();
-			CustomerMenu cm = new CustomerMenu();
+			CustomerMenu cm = new CustomerMenu(login.getLoginId());
 			if (isEmployee) {
 				em.display();
 			} else cm.display();

@@ -5,26 +5,31 @@ import java.sql.SQLException;
 
 import com.jun.dao.AccountDAO;
 import com.jun.dao.AccountDAOImpl;
+import com.jun.dao.LogDAO;
+import com.jun.dao.LogDAOImpl;
 import com.jun.exceptions.CardNotFoundException;
 import com.jun.model.Account;
 import com.jun.util.ConnectionUtil;
 
 public class AccountService {
 
-	public AccountDAO cardDAO;
+	public AccountDAO accountDAO;
+	public LogDAO logDAO;
 	public AccountService() {
-		this.cardDAO = new AccountDAOImpl();
+		this.accountDAO = new AccountDAOImpl();
+		this.logDAO = new LogDAOImpl();
 	}
 
-	public double getBalanceByCardNum(String accountNum) throws SQLException, CardNotFoundException{
+	public Account getAccountInfo(String accountNum, int userId) throws SQLException, CardNotFoundException{
 		try (Connection con = ConnectionUtil.getConnection()) {
-			Account card = cardDAO.getCardInfo(accountNum, con);
+			Account card = accountDAO.getCardInfo(accountNum, con);
 			
 			if (card == null) {
 				throw new CardNotFoundException("The card id: " + accountNum +" does not exist.");
 			}
-			
-			return card.getBalance();
+			String action = "got account information";
+			logDAO.logUserAction(userId, action, con);
+			return card;
 		}
 	}
 	

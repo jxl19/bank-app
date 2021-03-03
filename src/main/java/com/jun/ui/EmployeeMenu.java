@@ -12,7 +12,7 @@ public class EmployeeMenu implements Menu{
 		do {
 			System.out.println("==== EMPLOYEE MENU ====");
 			System.out.println("Please select an option below");
-			System.out.println("1.) Check user account");
+			System.out.println("1.) Lookup User");
 			System.out.println("2.) Check new applications");
 			System.out.println("3.) Log out");
 			

@@ -28,11 +28,7 @@ public class AccountApplicationMenu implements Menu {
 			System.out.println("1.) Exit");
 			
 			try {
-				System.out.println("here");
 				amount = Double.parseDouble(Menu.sc.nextLine());
-				System.out.println(amount);
-//				choice = Integer.parseInt(amount);
-				System.out.println("choice" + choice);
 			} catch (NumberFormatException e) {};
 			
 			switch (choice) {
@@ -40,8 +36,6 @@ public class AccountApplicationMenu implements Menu {
 					break;
 				default: 
 				try {
-					//need double here
-					System.out.println(amount);
 					String application = applicationService.applyForNewAccount(MainMenu.loginId, amount, isCheckingAccount);
 					System.out.println(application);
 					choice = 1;

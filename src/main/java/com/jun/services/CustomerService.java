@@ -19,6 +19,7 @@ public class CustomerService {
 	}
 	
 	public List<String> getCustomerCardNumber(int id) throws UserNotFoundException, SQLException {
+		
 		try (Connection con = ConnectionUtil.getConnection()) {
 			Customer customer;
 			
@@ -29,7 +30,6 @@ public class CustomerService {
 			
 			return customer.getCardNo();
 		}
-		
 		
 	}
 }

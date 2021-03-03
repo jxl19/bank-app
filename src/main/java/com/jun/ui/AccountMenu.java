@@ -8,11 +8,12 @@ import com.jun.services.TransactionService;
 
 public class AccountMenu implements Menu{
 	
-	private String id;
+	public String accountId;
+	public int userId;
 	public AccountService cardService;
 	public TransactionService transactionService;
-	public AccountMenu(String id) {
-		this.id = id;
+	public AccountMenu(String accountId, int userId) {
+		this.accountId = accountId;
 		this.cardService = new AccountService();
 	}
 	
@@ -20,13 +21,13 @@ public class AccountMenu implements Menu{
 		int choice = 0;
 		double balance = 0;
 		try {
-			balance = this.cardService.getBalanceByCardNum(this.id);
+			balance = this.cardService.getAccountInfo(accountId, userId).getBalance();
 		} catch (SQLException | CardNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
 		
 		do {
-			System.out.println("Account Menu for : " + this.id);
+			System.out.println("Account Menu for : " + accountId);
 			System.out.println("Current Balance: " + balance);
 			System.out.println("Choose an option below:");
 			System.out.println("1.) Deposit");
@@ -43,21 +44,21 @@ public class AccountMenu implements Menu{
 			switch (choice) {
 				case 1: 
 					System.out.println("Deposit menu");
-					TransactionMenu dtm = new TransactionMenu(this.id, "Deposit", balance);
+					TransactionMenu dtm = new TransactionMenu(accountId, "Deposit", balance, userId);
 					dtm.display();
 					break;
 				case 2:
 					System.out.println("Withdraw menu");
-					TransactionMenu wtm = new TransactionMenu(this.id, "Withdraw", balance);
+					TransactionMenu wtm = new TransactionMenu(accountId, "Withdraw", balance, userId);
 					wtm.display();
 					break;
 				case 3: 
 					System.out.println("Transfer menu");
-					TransactionMenu ttm = new TransactionMenu(this.id, "Transfer", balance);
+					TransactionMenu ttm = new TransactionMenu(accountId, "Transfer", balance, userId);
 					ttm.display();
 					break;
 				case 4: 
-					CustomerMenu cm = new CustomerMenu();
+					CustomerMenu cm = new CustomerMenu(userId);
 					cm.display();
 					break;
 				default:

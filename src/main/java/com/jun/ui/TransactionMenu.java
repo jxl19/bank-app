@@ -14,13 +14,15 @@ public class TransactionMenu implements Menu {
 	public String cardNum;
 	public String transactionType;
 	public double balance;
+	public int userId;
 	public TransactionService transactionService;
 	public AccountService cardService;
 	
-	public TransactionMenu(String cardNum, String transactionType, double balance) {
+	public TransactionMenu(String cardNum, String transactionType, double balance, int userId) {
 		this.cardNum = cardNum;
 		this.transactionType = transactionType;
 		this.balance = balance;
+		this.userId = userId;
 		this.transactionService = new TransactionService();
 		this.cardService = new AccountService();
 	}
@@ -46,8 +48,8 @@ public class TransactionMenu implements Menu {
 							try {
 								transactionService.updateBalance(cardNum, transactionType, amount);
 								try {
-									System.out.println("the updated balance is : " + cardService.getBalanceByCardNum(cardNum));
-									AccountMenu am = new AccountMenu(cardNum);
+									System.out.println("the updated balance is : " + cardService.getAccountInfo(cardNum, userId).getBalance());
+									AccountMenu am = new AccountMenu(cardNum, userId);
 									am.display();
 								} catch (CardNotFoundException e) {
 									e.printStackTrace();
@@ -60,9 +62,9 @@ public class TransactionMenu implements Menu {
 								//check if valid account somewhere?
 								System.out.println("Please enter account number that you want to transfer to");
 								String toAcc = Menu.sc.nextLine();
-								String transfer = transactionService.transferBalanceToAccount(MainMenu.loginId, toAcc, cardNum, amount);
+								String transfer = transactionService.transferBalanceToAccount(userId, toAcc, cardNum, amount);
 								System.out.println(transfer);
-								AccountMenu am = new AccountMenu(cardNum);
+								AccountMenu am = new AccountMenu(cardNum, userId);
 								am.display();
 							} catch (SQLException | InvalidBalanceException | InvalidTransferRequestException | InvalidAccountException e) {
 								System.out.println(e.getMessage());

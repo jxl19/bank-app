@@ -1,9 +1,5 @@
 package com.jun.ui;
 
-import java.sql.SQLException;
-
-import com.jun.exceptions.UserNotFoundException;
-
 public class ReviewCustomerMenu implements Menu{
 	
 	public ReviewCustomerMenu() {
@@ -28,12 +24,8 @@ public class ReviewCustomerMenu implements Menu{
 					EmployeeMenu em = new EmployeeMenu();
 					em.display();
 				default: 
-					CurrentCustomerMenu ccm = new CurrentCustomerMenu();
-					try {
-						ccm.getCustAccount(choice);
-					} catch (SQLException | UserNotFoundException e) {
-						System.out.println(e.getMessage());
-					} 
+					CustomerLookupMenu ccm = new CustomerLookupMenu(choice);
+					ccm.display();
 			}
 			
 		} while(choice != 1);

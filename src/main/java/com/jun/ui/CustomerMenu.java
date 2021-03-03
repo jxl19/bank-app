@@ -13,10 +13,11 @@ public class CustomerMenu implements Menu{
 	
 	public CustomerService customerService;
 	public AccountService cardService;
-	
-	public CustomerMenu() {
+	public int userId;
+	public CustomerMenu(int userId) {
 		this.customerService = new CustomerService();
 		this.cardService = new AccountService();
+		this.userId = userId;
 	}
 	
 	public void display() {
@@ -39,14 +40,13 @@ public class CustomerMenu implements Menu{
 			switch (choice) {
 				case 1: 
 					try {
-						getCustAccount(MainMenu.loginId);
+						getCustAccount(userId);
 					} catch (UserNotFoundException | SQLException e) {
 						System.out.println(e.getMessage());
 					}
 					break;
 				case 2: 
 					System.out.println("Checking transfers");
-					//new menu or just handle it here?
 					PendingTransferMenu ptm = new PendingTransferMenu();
 					ptm.display();
 					break;
@@ -68,7 +68,7 @@ public class CustomerMenu implements Menu{
 					System.out.println("No valid choice entered, please try again");
 			}
 			
-		} while (choice != 4);
+		} while (choice != 5);
 	}
 	
 	void getCustAccount(int id) throws UserNotFoundException, SQLException {
@@ -87,7 +87,7 @@ public class CustomerMenu implements Menu{
 			if (i < ids.size()) {
 				sb.append(i+1 + ".) " + ids.get(i));
 				try {
-					bal = cardService.getBalanceByCardNum(ids.get(i));
+					bal = cardService.getAccountInfo(ids.get(i), userId).getBalance();
 				} catch (SQLException | CardNotFoundException e) {
 					System.out.println(e.getMessage());
 				} 
@@ -102,7 +102,7 @@ public class CustomerMenu implements Menu{
 		} catch (NumberFormatException e) {} 
 		
 		if (choice - 1 == ids.size()) {
-			CustomerMenu cm = new CustomerMenu();
+			CustomerMenu cm = new CustomerMenu(userId);
 			System.out.println("Exiting..");
 			cm.display();
 		}
@@ -110,7 +110,7 @@ public class CustomerMenu implements Menu{
 		if (choice <= ids.size() & choice != 0) {
 			System.out.println(ids.get(choice - 1));
 			String acc = ids.get(choice - 1);
-			AccountMenu am = new AccountMenu(acc);
+			AccountMenu am = new AccountMenu(acc, userId);
 			am.display();
 		} else {
 			System.out.println("invalid");

@@ -20,7 +20,6 @@ public class ApplicationDAOImpl implements ApplicationDAO {
 		
 		PreparedStatement userBalPS = con.prepareStatement(userInfoQuery);
 		userBalPS.setInt(1, loginId);
-		System.out.println(loginId + "loginid");
 		ResultSet rs = userBalPS.executeQuery();
 		if (rs.next()) {
 			firstName = rs.getString("first_name");
@@ -37,8 +36,6 @@ public class ApplicationDAOImpl implements ApplicationDAO {
 			appPS.setInt(4, creditScore);
 			appPS.setDouble(5, initialBalance);
 			appPS.setBoolean(6, isCheckingAccount);
-			
-			//we will need to return false if... initial balance is more than what the person has..
 			
 			appPS.executeUpdate();
 
