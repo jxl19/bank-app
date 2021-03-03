@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 import com.jun.dao.AccountDAO;
 import com.jun.dao.AccountDAOImpl;
 import com.jun.dao.LogDAO;
@@ -30,16 +32,20 @@ public class TransactionService {
 		this.logDAO = new LogDAOImpl();
 	}
 	
+	private static Logger log = Logger.getLogger(TransactionService.class);
+	
 	public Transaction transferBalance(String cardNum, String transactionType, double amount, int userId) throws SQLException, NumberFormatException, InvalidBalanceException {
 		if (amount < 0) {
+			log.warn("User " + userId + "attempted to transfer a negative balance");
 			throw new InvalidBalanceException("You cannot input a negative balance!");
 		}
 		try (Connection con = ConnectionUtil.getConnection()) {
 			Transaction transaction = transactionDAO.updateBalance(cardNum, transactionType, amount, con);
 			if (transaction == null) {
+				log.warn("Transfer from " + userId + " would have created a negative balance");
 				throw new InvalidBalanceException("There is not enough balance to withdraw");
 			}
-			
+			log.info(userId + " successfully transffered balance");
 			logDAO.logUserAction(userId,cardNum +" : "+ transactionType + "ing balance " , con);
 			return transaction;
 		}
@@ -47,6 +53,7 @@ public class TransactionService {
 	
 	public String transferBalanceToAccount(int userId, String toAccount, String fromAccount, double amount) throws SQLException, InvalidBalanceException, InvalidTransferRequestException, InvalidAccountException {
 		if (toAccount == fromAccount) {
+			log.warn(userId + "Attempted to transfer to same account");
 			throw new InvalidTransferRequestException("You cannot transfer to yourself!");
 		}
 		try (Connection con = ConnectionUtil.getConnection()) {
@@ -54,6 +61,7 @@ public class TransactionService {
 			String action = "";
 			Account toAcc = accountDAO.getCardInfo(toAccount, con);
 			if (toAcc == null) {
+				log.warn("This account does not exist");
 				throw new InvalidAccountException("This account this not exist. Please try again.");
 			}
 			Account fromAcc = accountDAO.getCardInfo(fromAccount, con);
@@ -62,16 +70,19 @@ public class TransactionService {
 			double toBal = toAcc.getBalance();
 			int toID = toAcc.getAccountId();
 			if (fromBal < amount) {
+				log.warn("Attempted to transfer an amount more than user "+ userId + " currently has");
 				throw new InvalidBalanceException("You do not have enough in your account to make this transfer");
 			} else {
 				if (userId == toID) {
 					transactionDAO.transferBalance(fromAccount, toAccount, fromBal, toBal, amount, con);
 					ret = "The transfer is completed";
 					action = "successfully transferred from " + fromAccount + " to " + toAccount;
+					log.info("Successfully transsfered from" + fromAccount + " to " + toAccount);
 				} else {
 					transactionDAO.requestTransfer(fromAccount, toAccount, amount, toID, con);
 					ret = "Your transfer is pending";
 					action = "requested a transfer";
+					log.info("Transfer request pending");
 				}
 					
 			}
@@ -84,6 +95,7 @@ public class TransactionService {
 		try(Connection con = ConnectionUtil.getConnection()) {
 			ArrayList<PendingTransfer> pendingTransfer = new ArrayList<>();
 			pendingTransfer = transactionDAO.checkPendingTransfers(accountId, con);
+			log.info("User " + accountId + " checking pending transfers");
 			return pendingTransfer;
 		}
 	}
@@ -103,9 +115,11 @@ public class TransactionService {
 			double amount = pendingTransfer.getAmount();
 			
 			if(fromBal < amount) {
+				log.warn("Account transfering out does not have enough balance");
 				throw new InvalidBalanceException(fromAccId + "does not have enough to transfer."); 
 			} else {
 				transactionDAO.transferBalance(fromAccId, toAccId, fromBal, toBal, amount, con);
+				log.info("Transfer id: " + transferId + " Successfully transferred");
 				ret = "Balance has been successfully transferred.";
 			}
 			logDAO.logUserAction(userId, "approved a transfer", con);
@@ -120,6 +134,7 @@ public class TransactionService {
 			if (transactionDAO.declineTransfer(transferId, con)) {
 				ret = "You have declined this transfer";
 			}
+			log.info("Transfer id: " + transferId + " declined");
 			logDAO.logUserAction(userId, "declined a transfer", con);
 			return ret;
 		}

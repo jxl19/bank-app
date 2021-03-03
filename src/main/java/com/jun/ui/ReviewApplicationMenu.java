@@ -19,14 +19,18 @@ public class ReviewApplicationMenu implements Menu {
 	public void display() {
 		int choice = 0;
 		ApplicationReview ar = null;
-
-		do {
+		int prevId = -1;
+		a: do {
 			try {
 				ar = employeeService.reviewApplications();
-			} catch (ApplicationNotFoundException | SQLException | NullPointerException e) {
+			} catch (ApplicationNotFoundException | SQLException e) {
 				System.out.println(e.getMessage());
 			}
-			if (ar != null) {
+
+			if (ar.getAppId() == prevId) {
+				break a;
+			}
+			System.out.println("ar outside try" + ar);
 				System.out.println("=== APPLICATION REVIEW ===");
 				System.out.println("Customer Name: " + ar.getFirstName() + " " + ar.getLastName());
 				System.out.println("Credit Score: " + ar.getCredit());
@@ -39,43 +43,27 @@ public class ReviewApplicationMenu implements Menu {
 					choice = Integer.parseInt(Menu.sc.nextLine());
 				} catch (NumberFormatException e) {
 				}
-			} else {
-				System.out.println("There are no more new applications");
-				choice = 1;
-			}
-
 
 			switch (choice) {
 			case 1:
 				break;
 			case 2:
-				if (ar != null) {
 					try {
 						employeeService.approveAccount(ar.getLoginId(), ar.getAppId(), ar.getInitialBalance(), ar.isCheckingAccount());
-						System.out.println("Approved application of..");
 					} catch (InvalidBalanceException | InvalidApplicationException |SQLException e) {
 						System.out.println(e.getMessage());
 					}
-				} else {
-					choice = 1;
-					break;
-				}
 				break;
 			case 3:
-				if (ar != null) {
 					try {
 						employeeService.rejectAccount(ar.getAppId());
 					} catch (SQLException e) {
 						System.out.println(e.getMessage());
-					} 
-					System.out.println("declined");
-				} else {
-					choice = 1;
-					break;
-				}
+					}
 			default:
 				System.out.println("Invalid choice, try again!");
 			}
+			prevId = ar.getAppId();
 		} while (choice != 1);
 
 	}

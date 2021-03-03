@@ -3,6 +3,9 @@ package com.jun.services;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
+
+import org.apache.log4j.Logger;
 
 import com.jun.dao.CustomerDAO;
 import com.jun.dao.CustomerDAOImpl;
@@ -21,27 +24,35 @@ import com.jun.util.ConnectionUtil;
 public class EmployeeService {
 
 	public LogDAO logDAO;
-	public EmployeeDAO reviewApplicationDAO;
+	public EmployeeDAO EmployeeDAO;
 	public CustomerDAO customerDAO;
 	
 	public EmployeeService() {
-		this.reviewApplicationDAO = new EmployeeDAOImpl();
+		this.EmployeeDAO = new EmployeeDAOImpl();
 		this.customerDAO = new CustomerDAOImpl();
 		this.logDAO = new LogDAOImpl();
 	}
 	
+	private static Logger log = Logger.getLogger(EmployeeService.class);
+	
 	public ArrayList<TransactionLogs> getTransactions(int userId) throws SQLException {
 		try (Connection con = ConnectionUtil.getConnection()) {
 			ArrayList<TransactionLogs> logs = logDAO.getUserLogs(userId, con);
-			
+			log.info(userId + " successfully got a log of transactions");
 			return logs;
 		}
 	}
 	
-	public ApplicationReview reviewApplications() throws ApplicationNotFoundException, SQLException, NullPointerException{
+	public ApplicationReview reviewApplications() throws ApplicationNotFoundException, SQLException{
 		try (Connection con = ConnectionUtil.getConnection()) {
 			ApplicationReview applicationReview;
-			applicationReview = reviewApplicationDAO.reviewCustomerApplication(con);
+			applicationReview = EmployeeDAO.reviewCustomerApplication(con);
+			
+			if (applicationReview == null) {
+				log.info("Application was not found for review");
+				throw new ApplicationNotFoundException("No applications were found");
+			}
+			
 			return applicationReview;
 		}
 	}
@@ -53,14 +64,27 @@ public class EmployeeService {
 			boolean validApplication = false;
 			Customer cust = null;
 			cust = customerDAO.getCustomerBalance(userId, con);
-			validApplication = reviewApplicationDAO.checkIfValidApplication(appId, con);
-			if (!validApplication) throw new InvalidApplicationException("This application is no longer pending.");
+			validApplication = EmployeeDAO.checkIfValidApplication(appId, con);
+			if (!validApplication) {
+				log.info("Application " + appId + " no longer pending");
+				throw new InvalidApplicationException("This application is no longer pending.");
+			}
 			if (cust.getBalance() < initialBalance) {
 				ret = false;
-//				logDAO.logUserAction(userId, "tried to approve account - not enough balance", con);
+				log.info(userId + " does not have enough to create this account");
 				throw new InvalidBalanceException("Customer does not have enough cash to have this starting balance");
 			}
-			reviewApplicationDAO.approveApplication(userId, appId, initialBalance, isCheckingAccount, con);
+			
+			int firstDigit = ThreadLocalRandom.current().nextInt(3, 6 + 1);
+			StringBuilder accountNumber = new StringBuilder();
+			accountNumber.append(firstDigit);
+			int i = 1;
+			while (i <= 15) {
+				accountNumber.append(ThreadLocalRandom.current().nextInt(0, 9 + 1));
+				i++;
+			}
+			
+			EmployeeDAO.approveApplication(userId, appId, initialBalance, isCheckingAccount, accountNumber.toString() ,con);
 			con.commit();
 			return ret;
 		}
@@ -68,7 +92,8 @@ public class EmployeeService {
 	
 	public boolean rejectAccount(int appId) throws SQLException {
 		try (Connection con = ConnectionUtil.getConnection()) {
-			reviewApplicationDAO.rejectAccount(appId, con);
+			EmployeeDAO.rejectAccount(appId, con);
+			log.info("Application " + appId + "has been rejected");
 			return false;
 		}
 	}
