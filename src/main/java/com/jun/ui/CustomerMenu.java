@@ -54,12 +54,10 @@ public class CustomerMenu implements Menu{
 					ptm.display();
 					break;
 				case 3: 
-					System.out.println("Applying for checkings account..");
 					AccountApplicationMenu caam = new AccountApplicationMenu(true);
 					caam.display();
 					break;
 				case 4: 
-					System.out.println("Applying for savings account..");
 					AccountApplicationMenu saam = new AccountApplicationMenu(false);
 					saam.display();
 					break;
@@ -83,6 +81,11 @@ public class CustomerMenu implements Menu{
 		
 		ArrayList<Account> userAccounts = accountService.getAllUserAccounts(userId);
 		int numOfAccounts = userAccounts.size();
+		if(numOfAccounts == 0) {
+			CustomerMenu cm = new CustomerMenu(userId);
+			System.out.println("There are no bank accounts");
+			cm.display();
+		}
 
 		System.out.println("============================= BANK ACCOUNTS =========================================");
 		System.out.println("||    ACCOUNT TYPE    ||      ACCOUNT NUMBER      ||        ACCOUNT BALANCE        ||");
@@ -91,20 +94,14 @@ public class CustomerMenu implements Menu{
 			String accountType = account.isCheckingAccount() ? "Checkings" : "Savings  ";
 			System.out.println(i + ".)     " + accountType + "      ||     " + account.getAccountNum() + "     ||            " + df.format(account.getBalance()) + "         ||");
 		}));
-		System.out.println("|| 1.) Exit                                                                        ||");
 		System.out.println("=====================================================================================");
 		try { 
 			choice = Integer.parseInt(Menu.sc.nextLine());
 		} catch (NumberFormatException e) {} 
 		
-		if (choice - 1 == numOfAccounts) {
-			CustomerMenu cm = new CustomerMenu(userId);
-			System.out.println("Exiting..");
-			cm.display();
-		}
+
 		
 		if (choice <= numOfAccounts & choice != 0) {
-			System.out.println("acount num: " + userAccounts.get(choice - 2).getAccountNum());
 			String acc = userAccounts.get(choice - 1).getAccountNum();
 			AccountMenu am = new AccountMenu(acc, userId);
 			am.display();
@@ -117,7 +114,7 @@ public class CustomerMenu implements Menu{
 	
 	//create counter in foreach
 	private static <T>Consumer<T> withCounter(BiConsumer<Integer, T> consumer) {
-	    AtomicInteger counter = new AtomicInteger(2);
+	    AtomicInteger counter = new AtomicInteger(1);
 	    return item -> consumer.accept(counter.getAndIncrement(), item);
 	}
 }

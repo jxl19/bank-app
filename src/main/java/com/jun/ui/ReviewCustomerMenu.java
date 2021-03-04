@@ -35,7 +35,7 @@ public class ReviewCustomerMenu implements Menu{
 				default: 
 					boolean accountExists = false;
 				try {
-					accountExists = customerService.getCustomerById(choice);
+					accountExists = customerService.checkValidCustomer(choice);
 				} catch (UserNotFoundException | SQLException e) {
 					System.out.println(e.getMessage());
 				}

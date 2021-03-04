@@ -24,13 +24,19 @@ import com.jun.util.ConnectionUtil;
 public class EmployeeService {
 
 	public LogDAO logDAO;
-	public EmployeeDAO EmployeeDAO;
+	public EmployeeDAO employeeDAO;
 	public CustomerDAO customerDAO;
 	
 	public EmployeeService() {
-		this.EmployeeDAO = new EmployeeDAOImpl();
+		this.employeeDAO = new EmployeeDAOImpl();
 		this.customerDAO = new CustomerDAOImpl();
 		this.logDAO = new LogDAOImpl();
+	}
+	
+	public EmployeeService(LogDAO logDAO, EmployeeDAO employeeDAO, CustomerDAO customerDAO) {
+		this.logDAO = logDAO;
+		this.employeeDAO = employeeDAO;
+		this.customerDAO = customerDAO;
 	}
 	
 	private static Logger log = Logger.getLogger(EmployeeService.class);
@@ -46,7 +52,7 @@ public class EmployeeService {
 	public ApplicationReview reviewApplications() throws ApplicationNotFoundException, SQLException{
 		try (Connection con = ConnectionUtil.getConnection()) {
 			ApplicationReview applicationReview;
-			applicationReview = EmployeeDAO.reviewCustomerApplication(con);
+			applicationReview = employeeDAO.reviewCustomerApplication(con);
 			
 			if (applicationReview == null) {
 				log.info("Application was not found for review");
@@ -63,7 +69,7 @@ public class EmployeeService {
 			boolean ret = true;
 			boolean validApplication = false;
 			double custBal = customerDAO.getCustomer(userId, con).getBalance();
-			validApplication = EmployeeDAO.checkIfValidApplication(appId, con);
+			validApplication = employeeDAO.checkIfValidApplication(appId, con);
 			if (!validApplication) {
 				log.info("Application " + appId + " no longer pending");
 				throw new InvalidApplicationException("This application is no longer pending.");
@@ -83,7 +89,7 @@ public class EmployeeService {
 				i++;
 			}
 			log.info("Application " + appId + " had been approved");
-			EmployeeDAO.approveApplication(userId, appId, initialBalance, isCheckingAccount, accountNumber.toString(), con);
+			employeeDAO.approveApplication(userId, appId, initialBalance, isCheckingAccount, accountNumber.toString(), con);
 			customerDAO.updateCustomerBalance(userId, initialBalance, custBal, con);
 			con.commit();
 			return ret;
@@ -92,7 +98,7 @@ public class EmployeeService {
 	
 	public boolean rejectAccount(int appId) throws SQLException {
 		try (Connection con = ConnectionUtil.getConnection()) {
-			EmployeeDAO.rejectAccount(appId, con);
+			employeeDAO.rejectAccount(appId, con);
 			log.info("Application " + appId + " has been rejected");
 			return false;
 		}

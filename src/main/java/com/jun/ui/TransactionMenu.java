@@ -7,6 +7,7 @@ import com.jun.exceptions.InvalidBalanceException;
 import com.jun.exceptions.InvalidTransferRequestException;
 import com.jun.exceptions.UserNotFoundException;
 import com.jun.services.AccountService;
+import com.jun.services.CustomerService;
 import com.jun.services.TransactionService;
 
 public class TransactionMenu implements Menu {
@@ -17,6 +18,7 @@ public class TransactionMenu implements Menu {
 	public int userId;
 	public TransactionService transactionService;
 	public AccountService cardService;
+	public CustomerService customerService;
 
 	public TransactionMenu(String cardNum, String transactionType, double balance, int userId) {
 		this.cardNum = cardNum;
@@ -25,19 +27,23 @@ public class TransactionMenu implements Menu {
 		this.userId = userId;
 		this.transactionService = new TransactionService();
 		this.cardService = new AccountService();
+		this.customerService = new CustomerService();
 	}
 
 	@Override
 	public void display() {
-
+		double custBal = 0;
 		int choice = 0;
-
+		try {
+			custBal = customerService.getCustomerById(userId).getBalance();
+		} catch (UserNotFoundException | SQLException ex) {}
 		do {
 			System.out.println("===================================== " + transactionType.toUpperCase() + " MENU ==================================");
-			System.out.println("||                   Please enter an amount to " + transactionType.toLowerCase() +" or go back                  ||");
-			System.out.println("||                                     1.) Exit                                    ||");
-			System.out.println("||                             Current balance is: " + String.valueOf(balance) + "                         ||");
-			System.out.println("||           		           Amount to " + transactionType.toLowerCase() + "                               ||");
+			System.out.println("||                          Cash on customer: " + custBal + "                              ||");
+			System.out.println("||                   Please enter an amount to " + transactionType.toLowerCase() +" or go back                   ||");
+			System.out.println("||                   1.) Exit                                                       ||");
+			System.out.println("||                   Current balance is: " + String.valueOf(balance) + "                                  ||");
+			System.out.println("||                   Amount you want to " + transactionType.toLowerCase() + ":                                   ||");
 			System.out.println("=====================================================================================");
 			double amount = Double.parseDouble(Menu.sc.nextLine());
 			if ((int)amount == 1) {

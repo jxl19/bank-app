@@ -11,7 +11,7 @@ import com.jun.model.Account;
 public class AccountDAOImpl implements AccountDAO {
 
 	@Override
-	public Account getCardInfo(String accountNum, Connection con) throws SQLException {
+	public Account getAccountInfo(String accountNum, Connection con) throws SQLException {
 		Account account = null;
 		String sql = "SELECT * FROM bank.account WHERE account_no = ?";
 		

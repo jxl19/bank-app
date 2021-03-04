@@ -65,12 +65,12 @@ public class TransactionService {
 		try (Connection con = ConnectionUtil.getConnection()) {
 			String ret = "";
 			String action = "";
-			Account toAcc = accountDAO.getCardInfo(toAccount, con);
+			Account toAcc = accountDAO.getAccountInfo(toAccount, con);
 			if (toAcc == null) {
-				log.warn("This account does not exist");
+				log.info("This account does not exist");
 				throw new UserNotFoundException("This account this not exist. Please try again.");
 			}
-			Account fromAcc = accountDAO.getCardInfo(fromAccount, con);
+			Account fromAcc = accountDAO.getAccountInfo(fromAccount, con);
 			
 			double fromBal = fromAcc.getBalance();
 			double toBal = toAcc.getBalance();
@@ -85,7 +85,7 @@ public class TransactionService {
 					transactionDAO.transferBalance(fromAccount, toAccount, fromBal, toBal, amount, con);
 					ret = "The transfer is completed";
 					action = "successfully transferred from " + fromAccount + " to " + toAccount;
-					log.info("Successfully transsfered from" + fromAccount + " to " + toAccount);
+					log.info("Successfully transfered from" + fromAccount + " to " + toAccount);
 				} else {
 					transactionDAO.requestTransfer(fromAccount, toAccount, amount, toID, con);
 					ret = "Your transfer is pending";
@@ -116,8 +116,8 @@ public class TransactionService {
 
 			String fromAccId = pendingTransfer.getFromAccountId();
 			String toAccId = pendingTransfer.getToAccountId();
-			Account fromAcc = accountDAO.getCardInfo(fromAccId, con);
-			Account toAcc = accountDAO.getCardInfo(toAccId, con);
+			Account fromAcc = accountDAO.getAccountInfo(fromAccId, con);
+			Account toAcc = accountDAO.getAccountInfo(toAccId, con);
 			double fromBal = fromAcc.getBalance();
 			double toBal = toAcc.getBalance();
 			double amount = pendingTransfer.getAmount();

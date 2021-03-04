@@ -12,7 +12,6 @@ import com.jun.dao.LogDAO;
 import com.jun.dao.LogDAOImpl;
 import com.jun.dao.LoginDAO;
 import com.jun.dao.LoginDAOImpl;
-import com.jun.exceptions.InvalidEmailException;
 import com.jun.exceptions.UserAlreadyExistsException;
 import com.jun.exceptions.UserNotFoundException;
 import com.jun.model.Login;
@@ -28,9 +27,10 @@ public class LoginService {
 		this.customerDAO = new CustomerDAOImpl();
 	}
 	
-	public LoginService(LoginDAO loginDAO, LogDAO logDAO) {
+	public LoginService(LoginDAO loginDAO, LogDAO logDAO, CustomerDAO customerDAO) {
 		this.loginDAO = loginDAO;
 		this.logDAO = logDAO;
+		this.customerDAO = customerDAO;
 	}
 	
 	private static Logger log = Logger.getLogger(LoginService.class);
@@ -52,7 +52,7 @@ public class LoginService {
 		} 
 	}
 	
-	public boolean createUser(String username, String password, String firstName, String lastName, String email, boolean isEmployee) throws InvalidEmailException, UserAlreadyExistsException, SQLException {
+	public boolean createUser(String username, String password, String firstName, String lastName, String email, boolean isEmployee) throws UserAlreadyExistsException, SQLException {
 		try (Connection con = ConnectionUtil.getConnection()) {
 			con.setAutoCommit(false);
 			if (customerDAO.checkValidUnsername(username, con)) {

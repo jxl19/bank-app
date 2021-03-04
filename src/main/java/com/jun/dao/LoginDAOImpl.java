@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.jun.exceptions.InvalidEmailException;
 import com.jun.model.Login;
 
 public class LoginDAOImpl implements LoginDAO{
@@ -33,7 +32,7 @@ public class LoginDAOImpl implements LoginDAO{
 	}
 
 	@Override
-	public int createLogin(String username, String password, String email, Connection con) throws InvalidEmailException, SQLException {
+	public int createLogin(String username, String password, String email, Connection con) throws SQLException {
 		String sql = "INSERT INTO bank.login (username, email, pass) VALUES (?,?,?)";
 		String getIdSql = "SELECT login_id FROM bank.login WHERE username = ?";
 		int loginId = 0;

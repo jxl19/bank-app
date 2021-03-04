@@ -2,7 +2,6 @@ package com.jun.ui;
 
 import java.sql.SQLException;
 
-import com.jun.exceptions.InvalidEmailException;
 import com.jun.exceptions.UserAlreadyExistsException;
 import com.jun.exceptions.UserNotFoundException;
 import com.jun.model.Login;
@@ -31,7 +30,7 @@ public class MainMenu implements Menu {
 
 			switch (choice) {
 			case 1:
-				getAccountType();
+				login();
 				break;
 			case 2:
 				createUserAccount();
@@ -40,7 +39,7 @@ public class MainMenu implements Menu {
 		} while (choice != 3);
 	}
 
-	private void getAccountType() {
+	private void login() {
 		Login login = null;
 
 		System.out.println("Please Enter your username: ");
@@ -55,7 +54,7 @@ public class MainMenu implements Menu {
 		}
 
 		if (login == null) {
-			this.getAccountType();
+			login();
 		} else {
 			isEmployee = login.isEmployee();
 			loginId = login.getLoginId();
@@ -90,8 +89,10 @@ public class MainMenu implements Menu {
 		System.out.println("Please enter your last name:");
 		String lastName = Menu.sc.nextLine();
 		try {
-			loginService.createUser(un, pw, firstName, lastName, email, false);
-		} catch (InvalidEmailException | UserAlreadyExistsException | SQLException e) {
+			if (loginService.createUser(un, pw, firstName, lastName, email, false)) {
+				System.out.println("Successfully registered an account");
+			}
+		} catch (UserAlreadyExistsException | SQLException e) {
 			System.out.println(e.getMessage());
 		}
 	}

@@ -35,7 +35,7 @@ public class AccountServiceTest {
 		accountDAO = mock(AccountDAO.class);
 		mockConnection = mock(Connection.class);
 		
-		when(accountDAO.getCardInfo(eq("5432123456789876"), eq(mockConnection))).thenReturn(new Account("5432123456789876", 1000.00, 1, true));
+		when(accountDAO.getAccountInfo(eq("5432123456789876"), eq(mockConnection))).thenReturn(new Account("5432123456789876", 1000.00, 1, true));
 		
 	}
 	
@@ -70,7 +70,7 @@ public class AccountServiceTest {
 		try(MockedStatic<ConnectionUtil> mockedStatic = Mockito.mockStatic(ConnectionUtil.class)) {
 			mockedStatic.when(ConnectionUtil::getConnection).thenReturn(mockConnection);
 			
-			Account actual = accountService.getAccountInfo("5432123456789873", 2);
+			accountService.getAccountInfo("5432123456789873", 2);
 		}
 	}
 	

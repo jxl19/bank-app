@@ -19,6 +19,7 @@ public class AccountService {
 
 	public AccountDAO accountDAO;
 	public LogDAO logDAO;
+	
 	public AccountService() {
 		this.accountDAO = new AccountDAOImpl();
 		this.logDAO = new LogDAOImpl();
@@ -32,7 +33,7 @@ public class AccountService {
 
 	public Account getAccountInfo(String accountNum, int userId) throws AccountNotFoundException, SQLException{
 		try (Connection con = ConnectionUtil.getConnection()) {
-			Account card = accountDAO.getCardInfo(accountNum, con);
+			Account card = accountDAO.getAccountInfo(accountNum, con);
 			
 			if (card == null) {
 				log.error("Account " + accountNum + " was not found");

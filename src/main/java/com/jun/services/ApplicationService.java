@@ -27,9 +27,9 @@ public class ApplicationService {
 		this.logDAO = new LogDAOImpl();
 	}
 	
-	public ApplicationService(ApplicationDAO applicationDAO, LogDAO logDAO) {
+	public ApplicationService(ApplicationDAO applicationDAO, LogDAO logDAO, CustomerDAO customerDAO) {
 		this.applicationDAO = applicationDAO;
-//		this.customerDAO = customerDAO;
+		this.customerDAO = customerDAO;
 		this.logDAO = logDAO;
 	}
 	
