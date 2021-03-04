@@ -2,6 +2,11 @@ package com.jun.exceptions;
 
 public class InvalidApplicationException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7888377183788222937L;
+
 	public InvalidApplicationException() {
 	}
 

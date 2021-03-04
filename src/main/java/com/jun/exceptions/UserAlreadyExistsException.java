@@ -2,6 +2,11 @@ package com.jun.exceptions;
 
 public class UserAlreadyExistsException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7752328075231083028L;
+
 	public UserAlreadyExistsException() {
 	}
 

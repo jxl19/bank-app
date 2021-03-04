@@ -2,6 +2,11 @@ package com.jun.exceptions;
 
 public class ApplicationNotFoundException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1288702728179153325L;
+
 	public ApplicationNotFoundException() {
 	}
 

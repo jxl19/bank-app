@@ -58,6 +58,10 @@ public class TransactionService {
 	}
 	
 	public String transferBalanceToAccount(int userId, String toAccount, String fromAccount, double amount) throws SQLException, InvalidBalanceException, InvalidTransferRequestException, UserNotFoundException {
+		if (amount < 0) {
+			log.warn("User " + userId + "attempted to transfer a negative balance");
+			throw new InvalidBalanceException("You cannot input a negative balance!");
+		}
 		if (toAccount.equals(fromAccount)) {
 			log.warn(userId + "Attempted to transfer to same account");
 			throw new InvalidTransferRequestException("You cannot transfer to yourself!");

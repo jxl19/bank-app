@@ -2,6 +2,11 @@ package com.jun.exceptions;
 
 public class UserNotFoundException extends Exception{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 115905205491375210L;
+
 	public UserNotFoundException() {
 		super();
 	}

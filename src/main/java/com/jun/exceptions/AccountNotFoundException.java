@@ -2,6 +2,11 @@ package com.jun.exceptions;
 
 public class AccountNotFoundException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3532583399034808214L;
+
 	public AccountNotFoundException() {
 		super();
 	}

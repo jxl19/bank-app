@@ -2,6 +2,11 @@ package com.jun.exceptions;
 
 public class InvalidBalanceException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -759100143540568554L;
+
 	public InvalidBalanceException() {
 		// TODO Auto-generated constructor stub
 	}

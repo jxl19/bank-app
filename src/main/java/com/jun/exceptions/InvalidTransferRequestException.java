@@ -2,6 +2,11 @@ package com.jun.exceptions;
 
 public class InvalidTransferRequestException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4980991853787823465L;
+
 	public InvalidTransferRequestException() {
 	}
 
