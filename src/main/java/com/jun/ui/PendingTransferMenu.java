@@ -27,21 +27,18 @@ public class PendingTransferMenu implements Menu{
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
 			}
-			System.out.println("=== Pending Transfers ===");
-			System.out.println("Please select a pending transfer to review");
-			StringBuilder sb = new StringBuilder();
-			sb.append("1.)Exit");
-			sb.append(System.getProperty("line.separator"));
-			//makes sure pendingtransfer actually has a list
+			System.out.println("=============================== Pending Transfers =================================");
+			System.out.println("||                   Please select a pending transfer to review                  ||");
+			System.out.println("||                   1.)Exit                                                     ||");
+
+			//using as an exit condition
 			if (pendingTransfers.size() > 0) {
-				//lambda expr
 				pendingTransfers.forEach(withCounter((i, pt) -> {
 					String fromAccount = pt.getFromAccountId();
 					double amount = pt.getAmount();
-					sb.append((i+2) + ".)" + "From account: " + fromAccount + "amount: " + amount);
-					sb.append(System.getProperty("line.separator"));
+					System.out.println("||                   " + (i+2) + ".)" + "From account: " + fromAccount + " amount: " + amount + "           ||");
 				}));
-				System.out.println(sb);
+				System.out.println("===================================================================================");
 			try {
 				choice = Integer.parseInt(Menu.sc.nextLine());
 			} catch (NumberFormatException e) {};
@@ -56,13 +53,14 @@ public class PendingTransferMenu implements Menu{
 				default:
 					int selected = 0;
 					PendingTransfer currentAccount = pendingTransfers.get(choice - 2);
-					System.out.println("=== REVIEWING TRANSFER ===");
-					System.out.println("From account: " + currentAccount.getFromAccountId());
-					System.out.println("To account: " + currentAccount.getToAccountId());
-					System.out.println("Amount: " + currentAccount.getAmount());
-					System.out.println("1.) Exit");
-					System.out.println("2.) Approve");
-					System.out.println("3.) Deny");
+					System.out.println("============================= REVIEWING TRANSFER ==================================");
+					System.out.println("||                       From account: " + currentAccount.getFromAccountId() + "                          ||");
+					System.out.println("||                       To account: " + currentAccount.getToAccountId() + "                            ||");
+					System.out.println("||                       Amount: " + currentAccount.getAmount() + "                                         ||");
+					System.out.println("||                       1.) Exit                                                ||");
+					System.out.println("||                       2.) Approve                                             ||");
+					System.out.println("||                       3.) Deny                                                ||");
+					System.out.println("===================================================================================");
 					try {
 						selected = Integer.parseInt(Menu.sc.nextLine());
 					}catch(NumberFormatException e) {};
@@ -71,7 +69,6 @@ public class PendingTransferMenu implements Menu{
 						case 1:
 							break;
 						case 2:
-							System.out.println("approved");
 						try {
 							String approvedTransaction = transactionService.approveTransfer(currentAccount.getTransferId(), MainMenu.loginId);
 							System.out.println(approvedTransaction);
@@ -83,7 +80,6 @@ public class PendingTransferMenu implements Menu{
 							selected = 1;
 							break;
 						case 3:
-							System.out.println("declined");
 							try {
 								String approvedTransaction = transactionService.declineTransfer(currentAccount.getTransferId(), MainMenu.loginId);
 								System.out.println(approvedTransaction);

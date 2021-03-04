@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import com.jun.exceptions.ApplicationNotFoundException;
 import com.jun.exceptions.InvalidApplicationException;
 import com.jun.exceptions.InvalidBalanceException;
+import com.jun.exceptions.UserNotFoundException;
 import com.jun.model.ApplicationReview;
 import com.jun.services.EmployeeService;
 
@@ -29,15 +30,16 @@ public class ReviewApplicationMenu implements Menu {
 			if (ar == null || ar.getAppId() == prevId) {
 				break a;
 			}
-				System.out.println("=== APPLICATION REVIEW ===");
-				System.out.println("Customer Name: " + ar.getFirstName() + " " + ar.getLastName());
-				System.out.println("Customer id: " + ar.getLoginId());
-				System.out.println("Credit Score: " + ar.getCredit());
-				System.out.println("Account starting balance: " + ar.getInitialBalance());
-				System.out.println("Please review the application");
-				System.out.println("1.) Exit");
-				System.out.println("2.) Approve");
-				System.out.println("3.) Decline");
+				System.out.println("=============================== APPLICATION REVIEW ==================================");
+				System.out.println("||                       Customer Name: " + ar.getFirstName() + " " + ar.getLastName() + "                                   ||");
+				System.out.println("||                       Customer id: " + ar.getLoginId()+ "                                            ||");
+				System.out.println("||                       Credit Score: " + ar.getCredit()+ "                                         ||");
+				System.out.println("||                       Account starting balance: " + ar.getInitialBalance()+ "                         ||");
+				System.out.println("||                       Please review the application                             ||");
+				System.out.println("||                       1.) Exit                                                  ||");
+				System.out.println("||                       2.) Approve                                               ||");
+				System.out.println("||                       3.) Decline                                               ||");
+				System.out.println("=====================================================================================");
 				try {
 					choice = Integer.parseInt(Menu.sc.nextLine());
 				} catch (NumberFormatException e) {
@@ -47,10 +49,14 @@ public class ReviewApplicationMenu implements Menu {
 			case 1:
 				break;
 			case 2:
+					boolean approved = false;
 					try {
-						employeeService.approveAccount(ar.getLoginId(), ar.getAppId(), ar.getInitialBalance(), ar.isCheckingAccount());
-					} catch (InvalidBalanceException | InvalidApplicationException |SQLException e) {
+						approved = employeeService.approveAccount(ar.getLoginId(), ar.getAppId(), ar.getInitialBalance(), ar.isCheckingAccount());
+					} catch (InvalidBalanceException | InvalidApplicationException |SQLException | UserNotFoundException e) {
 						System.out.println(e.getMessage());
+					}
+					if (approved) {
+						System.out.println("Account has been approved");
 					}
 				break;
 			case 3:
@@ -59,6 +65,7 @@ public class ReviewApplicationMenu implements Menu {
 					} catch (SQLException e) {
 						System.out.println(e.getMessage());
 					}
+					System.out.println("Account has been declined");
 					break;
 			default:
 				System.out.println("Invalid choice, try again!");

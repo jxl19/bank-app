@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 
 import com.jun.dao.AccountDAO;
 import com.jun.dao.AccountDAOImpl;
+import com.jun.dao.CustomerDAO;
+import com.jun.dao.CustomerDAOImpl;
 import com.jun.dao.LogDAO;
 import com.jun.dao.LogDAOImpl;
 import com.jun.dao.TransactionDAO;
@@ -25,34 +27,41 @@ public class TransactionService {
 	public TransactionDAO transactionDAO;
 	public AccountDAO accountDAO;
 	public LogDAO logDAO;
+	public CustomerDAO customerDAO;
 	
 	public TransactionService() {
 		this.transactionDAO = new TransactionDAOImpl();
 		this.accountDAO = new AccountDAOImpl();
 		this.logDAO = new LogDAOImpl();
+		this.customerDAO = new CustomerDAOImpl();
 	}
 	
 	private static Logger log = Logger.getLogger(TransactionService.class);
 	
-	public Transaction transferBalance(String cardNum, String transactionType, double amount, int userId) throws SQLException, NumberFormatException, InvalidBalanceException {
+	public Transaction transferBalance(String accountNum, String transactionType, double amount, int userId) throws SQLException, NumberFormatException, InvalidBalanceException, UserNotFoundException {
 		if (amount < 0) {
 			log.warn("User " + userId + "attempted to transfer a negative balance");
 			throw new InvalidBalanceException("You cannot input a negative balance!");
 		}
 		try (Connection con = ConnectionUtil.getConnection()) {
-			Transaction transaction = transactionDAO.updateBalance(cardNum, transactionType, amount, con);
+			double custBal = customerDAO.getCustomer(userId, con).getBalance();
+			Transaction transaction = transactionDAO.updateBalance(accountNum, transactionType, amount, custBal, con);
+			if(transactionType == "Deposit") {
+				customerDAO.updateCustomerBalance(userId, amount, custBal, con);
+			} else if(transactionType =="Withdraw") {
+				customerDAO.updateCustomerBalance(userId, -amount, custBal, con);
+			}
 			log.info(userId + " successfully transffered balance");
-			logDAO.logUserAction(userId,cardNum +" : "+ transactionType + "ing balance " , con);
+			logDAO.logUserAction(userId, accountNum +" : "+ transactionType + "ing balance " , con);
 			return transaction;
 		}
 	}
 	
 	public String transferBalanceToAccount(int userId, String toAccount, String fromAccount, double amount) throws SQLException, InvalidBalanceException, InvalidTransferRequestException, UserNotFoundException {
-		if (toAccount == fromAccount) {
+		if (toAccount.equals(fromAccount)) {
 			log.warn(userId + "Attempted to transfer to same account");
 			throw new InvalidTransferRequestException("You cannot transfer to yourself!");
 		}
-		System.out.println("transbaltoacc");
 		try (Connection con = ConnectionUtil.getConnection()) {
 			String ret = "";
 			String action = "";

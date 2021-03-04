@@ -33,10 +33,16 @@ public class TransactionMenu implements Menu {
 		int choice = 0;
 
 		do {
-			System.out.println("1.) Exit");
-			System.out.println("Current balance is: " + String.valueOf(balance));
-			System.out.println("Please input the amount to " + transactionType.toLowerCase());
+			System.out.println("===================================== " + transactionType.toUpperCase() + " MENU ==================================");
+			System.out.println("||                   Please enter an amount to " + transactionType.toLowerCase() +" or go back                  ||");
+			System.out.println("||                                     1.) Exit                                    ||");
+			System.out.println("||                             Current balance is: " + String.valueOf(balance) + "                         ||");
+			System.out.println("||           		           Amount to " + transactionType.toLowerCase() + "                               ||");
+			System.out.println("=====================================================================================");
 			double amount = Double.parseDouble(Menu.sc.nextLine());
+			if ((int)amount == 1) {
+				choice = 1;
+			}
 			switch (choice) {
 			case 1:
 				break;
@@ -45,22 +51,18 @@ public class TransactionMenu implements Menu {
 					try {
 						transactionService.transferBalance(cardNum, transactionType, amount, userId);
 						try {
-							System.out.println("the updated balance is : "
+							System.out.println("Transaction successful .The updated balance is : "
 									+ cardService.getAccountInfo(cardNum, userId).getBalance());
 							AccountMenu am = new AccountMenu(cardNum, userId);
 							am.display();
 						} catch (AccountNotFoundException e) {
 							e.printStackTrace();
 						}
-					} catch (SQLException | NumberFormatException | InvalidBalanceException e) {
+					} catch (SQLException | NumberFormatException | InvalidBalanceException | UserNotFoundException e) {
 						System.out.println(e.getMessage());
 					}
 				} else {
 					try {
-						// check if valid account somewhere?
-						// probably dont use transfer as a message? return a boolean and print from that
-						// maybe?
-						int count = 0;
 						System.out.println("Please enter account number that you want to transfer to");
 						String toAcc = Menu.sc.nextLine();
 						String transfer = transactionService.transferBalanceToAccount(userId, toAcc, cardNum, amount);

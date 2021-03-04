@@ -18,7 +18,7 @@ public class CustomerService {
 	
 	public boolean getCustomerById(int id) throws UserNotFoundException, SQLException {
 		try (Connection con = ConnectionUtil.getConnection()) {
-			if (customerDAO.getCustomerById(id, con) == null) {
+			if (customerDAO.getCustomerAccountsById(id, con) == null) {
 				throw new UserNotFoundException("This user id does not exist");				
 			}
 			return true;

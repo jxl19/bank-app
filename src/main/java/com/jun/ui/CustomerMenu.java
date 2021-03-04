@@ -28,14 +28,14 @@ public class CustomerMenu implements Menu{
 		int choice = 0;
 		
 		do {
-			System.out.println("=== CUSTOMER MENU ===");
-			System.out.println("Please select an option below: ");
-			System.out.println("1.) Select Bank Account");
-			System.out.println("2.) Pending Transfers");
-			System.out.println("3.) Apply for new Checkings account");
-			System.out.println("4.) Apply for new Savings account");
-			System.out.println("5.) Log Out");
-			
+			System.out.println("============================ Customer Menu ====================================");
+			System.out.println("||                   Please select an option below:                          ||");
+			System.out.println("||                      1.) Select Bank Account                              ||");
+			System.out.println("||                      2.) Pending Transfers                                ||");
+			System.out.println("||                      3.) Apply for new Checkings account                  ||");
+			System.out.println("||                      4.) Apply for new Savings account                    ||");
+			System.out.println("||                      5.) Log Out                                          ||");
+			System.out.println("===============================================================================");
 			try {
 				choice = Integer.parseInt(Menu.sc.nextLine());
 			} catch (NumberFormatException e) {}
@@ -84,16 +84,15 @@ public class CustomerMenu implements Menu{
 		ArrayList<Account> userAccounts = accountService.getAllUserAccounts(userId);
 		int numOfAccounts = userAccounts.size();
 
-		System.out.println("user accounts" + userAccounts);
-		System.out.println("number of accounts" + numOfAccounts);
 		System.out.println("============================= BANK ACCOUNTS =========================================");
-		System.out.println("      ACCOUNT TYPE    ||      ACCOUNT NUMBER      ||        ACCOUNT BALANCE        ||");
+		System.out.println("||    ACCOUNT TYPE    ||      ACCOUNT NUMBER      ||        ACCOUNT BALANCE        ||");
 		System.out.println("=====================================================================================");
 		userAccounts.forEach(withCounter((i, account)-> {
 			String accountType = account.isCheckingAccount() ? "Checkings" : "Savings  ";
 			System.out.println(i + ".)     " + accountType + "      ||     " + account.getAccountNum() + "     ||            " + df.format(account.getBalance()) + "         ||");
 		}));
-
+		System.out.println("|| 1.) Exit                                                                        ||");
+		System.out.println("=====================================================================================");
 		try { 
 			choice = Integer.parseInt(Menu.sc.nextLine());
 		} catch (NumberFormatException e) {} 
@@ -105,7 +104,7 @@ public class CustomerMenu implements Menu{
 		}
 		
 		if (choice <= numOfAccounts & choice != 0) {
-			System.out.println("acount num: " + userAccounts.get(choice - 1).getAccountNum());
+			System.out.println("acount num: " + userAccounts.get(choice - 2).getAccountNum());
 			String acc = userAccounts.get(choice - 1).getAccountNum();
 			AccountMenu am = new AccountMenu(acc, userId);
 			am.display();
@@ -118,7 +117,7 @@ public class CustomerMenu implements Menu{
 	
 	//create counter in foreach
 	private static <T>Consumer<T> withCounter(BiConsumer<Integer, T> consumer) {
-	    AtomicInteger counter = new AtomicInteger(1);
+	    AtomicInteger counter = new AtomicInteger(2);
 	    return item -> consumer.accept(counter.getAndIncrement(), item);
 	}
 }

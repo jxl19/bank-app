@@ -14,7 +14,7 @@ import com.jun.model.Transaction;
 public class TransactionDAOImpl implements TransactionDAO {
 	
 	@Override
-	public Transaction updateBalance(String accountNum, String transactionType, double amount, Connection con) throws SQLException, NumberFormatException, InvalidBalanceException{
+	public Transaction updateBalance(String accountNum, String transactionType, double amount, double userBal, Connection con) throws SQLException, NumberFormatException, InvalidBalanceException{
 		Transaction transaction = null;
 		String getBalSql = "SELECT balance FROM bank.account WHERE account_no = ?";
 		String updateBalSql = "UPDATE bank.account SET balance = ? WHERE account_no = ?";
@@ -31,6 +31,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 			accountBalance = balRS.getDouble("balance");
 		}
 		
+		//get customer here and update their balance
 		if (transactionType == "Deposit") {
 			accountBalance += amount;
 			updatePS.setDouble(1, accountBalance);

@@ -9,11 +9,11 @@ import com.jun.model.Login;
 import com.jun.services.LoginService;
 
 public class MainMenu implements Menu {
-	
-	public LoginService loginService; 
+
+	public LoginService loginService;
 	public static boolean isEmployee;
 	public static int loginId;
-	
+
 	public MainMenu() {
 		this.loginService = new LoginService();
 	}
@@ -21,40 +21,39 @@ public class MainMenu implements Menu {
 	public void display() {
 		int choice = 0;
 		do {
-			System.out.println("=== Welcome to Bank of Jun! ===");
-			System.out.println("Select 1 to login");
-			System.out.println("Select 2 to create a user account");
+			System.out.println("========================= Welcome to Bank of Jun! =================================");
+			System.out.println("||                              1.) Login                                        ||");
+			System.out.println("||                              2.) Create Account                               ||");
+			System.out.println("===================================================================================");
 			try {
 				choice = Integer.parseInt(Menu.sc.nextLine());
 			} catch (NumberFormatException e) {};
-			
+
 			switch (choice) {
-				case 1: 
-					getAccountType();
-					break;
-				case 2:
-					createUserAccount();
-					break;
-				case 3:
-					break;
+			case 1:
+				getAccountType();
+				break;
+			case 2:
+				createUserAccount();
+				break;
 			}
-		} while (choice != 1);
+		} while (choice != 3);
 	}
-	
+
 	private void getAccountType() {
 		Login login = null;
-		
+
 		System.out.println("Please Enter your username: ");
 		String un = Menu.sc.nextLine();
 		System.out.println("Please Enter your password: ");
 		String pw = Menu.sc.nextLine();
-		
+
 		try {
 			login = loginService.authenticateUser(un, pw);
 		} catch (SQLException | UserNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
-		
+
 		if (login == null) {
 			this.getAccountType();
 		} else {
@@ -64,10 +63,11 @@ public class MainMenu implements Menu {
 			CustomerMenu cm = new CustomerMenu(login.getLoginId());
 			if (isEmployee) {
 				em.display();
-			} else cm.display();
+			} else
+				cm.display();
 		}
 	}
-	
+
 	private void createUserAccount() {
 		boolean invalidEmail = true;
 		String email = "";
@@ -91,9 +91,8 @@ public class MainMenu implements Menu {
 		String lastName = Menu.sc.nextLine();
 		try {
 			loginService.createUser(un, pw, firstName, lastName, email, false);
-		} catch (InvalidEmailException  | UserAlreadyExistsException | SQLException e) {
+		} catch (InvalidEmailException | UserAlreadyExistsException | SQLException e) {
 			System.out.println(e.getMessage());
-		} 
+		}
 	}
-	
 }

@@ -18,10 +18,11 @@ public class ReviewCustomerMenu implements Menu{
 		int choice = 0;
 		
 		do {
-			System.out.println("===REVIEW CUSTOMER===");
-			System.out.println("Enter customer id: ");
-			System.out.println("1.) Exit");
-			
+			System.out.println("===================================REVIEW CUSTOMER===================================");
+			System.out.println("||                         Enter a customer id or go back                          ||");
+			System.out.println("||                               Enter customer id:                                ||");
+			System.out.println("||                               1.) Exit                                          ||");
+			System.out.println("=====================================================================================");
 			try {
 				choice = Integer.parseInt(Menu.sc.nextLine());
 			} catch (NumberFormatException e) {}

@@ -7,12 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jun.exceptions.InvalidBalanceException;
+import com.jun.exceptions.UserNotFoundException;
 import com.jun.model.Customer;
 
 public class CustomerDAOImpl implements CustomerDAO {
 
 	@Override
-	public Customer getCustomerById(int userId, Connection con) throws SQLException {
+	public Customer getCustomerAccountsById(int userId, Connection con) throws SQLException {
 		Customer cust = null;
 		String sql = "SELECT * FROM bank.account WHERE login_id = ?";
 		String custSql = "SELECT cash FROM bank.customer WHERE login_id = ?";
@@ -40,7 +42,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	}
 
 	@Override
-	public Customer getCustomerBalance(int userId, Connection con) throws SQLException {
+	public Customer getCustomer(int userId, Connection con) throws SQLException {
 		Customer cust = null;
 		double custBal = 0;
 		String custSql = "SELECT * FROM bank.customer WHERE login_id = ?";
@@ -66,6 +68,20 @@ public class CustomerDAOImpl implements CustomerDAO {
 		if (rs.next()) {
 			return false;
 		}
+		return true;
+	}
+
+	@Override
+	public boolean updateCustomerBalance(int userId, double amount, double currBal, Connection con) throws UserNotFoundException, InvalidBalanceException, SQLException {
+		String sql = "UPDATE bank.customer SET cash = ? WHERE login_id = ?";
+		double newBalance = currBal - amount;
+		if (newBalance < 0) {
+			throw new InvalidBalanceException("You do not have enough cash to make this transaction");
+		}
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setDouble(1, newBalance);
+		ps.setInt(2, userId);
+		ps.executeUpdate();
 		return true;
 	}
 

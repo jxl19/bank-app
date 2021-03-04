@@ -16,8 +16,8 @@ import com.jun.dao.LogDAOImpl;
 import com.jun.exceptions.ApplicationNotFoundException;
 import com.jun.exceptions.InvalidApplicationException;
 import com.jun.exceptions.InvalidBalanceException;
+import com.jun.exceptions.UserNotFoundException;
 import com.jun.model.ApplicationReview;
-import com.jun.model.Customer;
 import com.jun.model.TransactionLogs;
 import com.jun.util.ConnectionUtil;
 
@@ -57,19 +57,18 @@ public class EmployeeService {
 		}
 	}
 	
-	public boolean approveAccount(int userId, int appId, double initialBalance, boolean isCheckingAccount) throws SQLException, InvalidBalanceException, InvalidApplicationException {
+	public boolean approveAccount(int userId, int appId, double initialBalance, boolean isCheckingAccount) throws SQLException, InvalidBalanceException, InvalidApplicationException, UserNotFoundException {
 		try (Connection con = ConnectionUtil.getConnection()) {
 			con.setAutoCommit(false);
 			boolean ret = true;
 			boolean validApplication = false;
-			Customer cust = null;
-			cust = customerDAO.getCustomerBalance(userId, con);
+			double custBal = customerDAO.getCustomer(userId, con).getBalance();
 			validApplication = EmployeeDAO.checkIfValidApplication(appId, con);
 			if (!validApplication) {
 				log.info("Application " + appId + " no longer pending");
 				throw new InvalidApplicationException("This application is no longer pending.");
 			}
-			if (cust.getBalance() < initialBalance) {
+			if (custBal < initialBalance) {
 				ret = false;
 				log.info(userId + " does not have enough to create this account");
 				throw new InvalidBalanceException("Customer does not have enough cash to have this starting balance");
@@ -83,8 +82,9 @@ public class EmployeeService {
 				accountNumber.append(ThreadLocalRandom.current().nextInt(0, 9 + 1));
 				i++;
 			}
-			
-			EmployeeDAO.approveApplication(userId, appId, initialBalance, isCheckingAccount, accountNumber.toString() ,con);
+			log.info("Application " + appId + " had been approved");
+			EmployeeDAO.approveApplication(userId, appId, initialBalance, isCheckingAccount, accountNumber.toString(), con);
+			customerDAO.updateCustomerBalance(userId, initialBalance, custBal, con);
 			con.commit();
 			return ret;
 		}
@@ -93,7 +93,7 @@ public class EmployeeService {
 	public boolean rejectAccount(int appId) throws SQLException {
 		try (Connection con = ConnectionUtil.getConnection()) {
 			EmployeeDAO.rejectAccount(appId, con);
-			log.info("Application " + appId + "has been rejected");
+			log.info("Application " + appId + " has been rejected");
 			return false;
 		}
 	}

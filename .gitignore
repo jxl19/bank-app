@@ -29,3 +29,4 @@ dependency-reduced-pom.xml
 *.idea
 
 README.html
+application.log

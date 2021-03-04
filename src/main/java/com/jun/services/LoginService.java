@@ -52,7 +52,6 @@ public class LoginService {
 		} 
 	}
 	
-	//TODO: admin can create employee
 	public boolean createUser(String username, String password, String firstName, String lastName, String email, boolean isEmployee) throws InvalidEmailException, UserAlreadyExistsException, SQLException {
 		try (Connection con = ConnectionUtil.getConnection()) {
 			con.setAutoCommit(false);
@@ -61,7 +60,6 @@ public class LoginService {
 				if (userId == (int)userId) {
 					if (!isEmployee) {
 						int userCredit = generateCredit();
-						System.out.println("generating user credit:" + userCredit);
 						loginDAO.createUser(isEmployee, userId, firstName, lastName, con);
 						loginDAO.createCustomer(userId, userCredit, con);
 					} else {

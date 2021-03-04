@@ -28,20 +28,19 @@ public class AccountMenu implements Menu{
 		}
 		
 		do {
-			System.out.println("Account Menu for : " + accountId);
-			System.out.println("Current Balance: " + balance);
-			System.out.println("Choose an option below:");
-			System.out.println("1.) Deposit");
-			System.out.println("2.) Withdraw");
-			System.out.println("3.) Transfer");
-			System.out.println("4.) Customer Menu");
-			
+			System.out.println("=======================Account Menu for : " + accountId + "==========================");
+			System.out.println("||                          Current Balance: " + balance + "                               ||");
+			System.out.println("||                            Choose an option below:                              ||");
+			System.out.println("||                                1.) Deposit                                      ||");
+			System.out.println("||                                2.) Withdraw                                     ||");
+			System.out.println("||                                3.) Transfer                                     ||");
+			System.out.println("||                                4.) Customer Menu                                ||");
+			System.out.println("=====================================================================================");
 			try {
 				choice = Integer.parseInt(Menu.sc.nextLine());
 			} catch(NumberFormatException e) {
 			}
-			
-			System.out.println("user id inside accme" + userId);
+
 			switch (choice) {
 				case 1: 
 					TransactionMenu dtm = new TransactionMenu(accountId, "Deposit", balance, userId);

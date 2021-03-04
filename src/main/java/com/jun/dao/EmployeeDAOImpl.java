@@ -34,7 +34,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	@Override
 	public boolean approveApplication(int loginId, int appId, double initialBalance, boolean isCheckingAccount, String accountNum, Connection con) throws InvalidBalanceException, SQLException {
-		
 
 		String updateAppSql = "UPDATE bank.pending_applications SET pending = FALSE, approved= TRUE WHERE app_id = ?";
 		String createAccSql = "INSERT INTO bank.account (account_no, login_id, balance, is_checking_account) VALUES (?,?,?,?)";
