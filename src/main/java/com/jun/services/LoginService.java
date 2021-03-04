@@ -51,12 +51,10 @@ public class LoginService {
 			return login;
 		} 
 	}
-	//need to check for useralreadyexists
+	
 	//TODO: admin can create employee
 	public boolean createUser(String username, String password, String firstName, String lastName, String email, boolean isEmployee) throws InvalidEmailException, UserAlreadyExistsException, SQLException {
-		System.out.println("outside con");
 		try (Connection con = ConnectionUtil.getConnection()) {
-			System.out.println("inside conn");
 			con.setAutoCommit(false);
 			if (customerDAO.checkValidUnsername(username, con)) {
 				int userId = loginDAO.createLogin(username, password, email, con);
@@ -72,7 +70,7 @@ public class LoginService {
 					}
 				}
 			} else {
-				throw new UserAlreadyExistsException("Username needs to be unique");
+				throw new UserAlreadyExistsException("Username is already being used, please try again with another usename");
 			}
 			con.commit();
 			return true;

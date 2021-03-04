@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.jun.exceptions.InvalidBalanceException;
@@ -13,7 +14,7 @@ import com.jun.model.Transaction;
 public class TransactionDAOImpl implements TransactionDAO {
 	
 	@Override
-	public Transaction updateBalance(String cardNum, String transactionType, double amount, Connection con) throws SQLException, NumberFormatException, InvalidBalanceException{
+	public Transaction updateBalance(String accountNum, String transactionType, double amount, Connection con) throws SQLException, NumberFormatException, InvalidBalanceException{
 		Transaction transaction = null;
 		String getBalSql = "SELECT balance FROM bank.account WHERE account_no = ?";
 		String updateBalSql = "UPDATE bank.account SET balance = ? WHERE account_no = ?";
@@ -21,26 +22,26 @@ public class TransactionDAOImpl implements TransactionDAO {
 		PreparedStatement balPS = con.prepareStatement(getBalSql);
 		PreparedStatement updatePS = con.prepareStatement(updateBalSql);
 		
-		balPS.setString(1, cardNum);
-		updatePS.setString(2, cardNum);
+		balPS.setString(1, accountNum);
+		updatePS.setString(2, accountNum);
 		ResultSet balRS = balPS.executeQuery();
-		double cardBalance = 0; 
+		double accountBalance = 0; 
 		
 		if (balRS.next()) {
-			cardBalance = balRS.getDouble("balance");
+			accountBalance = balRS.getDouble("balance");
 		}
 		
 		if (transactionType == "Deposit") {
-			cardBalance += amount;
-			updatePS.setDouble(1, cardBalance);
-			transaction = new Transaction(String.valueOf(cardBalance));
+			accountBalance += amount;
+			updatePS.setDouble(1, accountBalance);
+			transaction = new Transaction(String.valueOf(accountBalance));
 		} else if (transactionType == "Withdraw") {
-			if (cardBalance - amount > 0) {
-				cardBalance -= amount;
-				updatePS.setDouble(1, cardBalance);
-				transaction = new Transaction(String.valueOf(cardBalance));
+			if (accountBalance - amount >= 0) {
+				accountBalance -= amount;
+				updatePS.setDouble(1, accountBalance);
+				transaction = new Transaction(String.valueOf(accountBalance));
 			} else {
-				return transaction = null;
+				throw new InvalidBalanceException("There is not enough balance to complete this transaction");
 			}
 		}
 		updatePS.executeUpdate();
@@ -52,7 +53,6 @@ public class TransactionDAOImpl implements TransactionDAO {
 	public boolean transferBalance(String fromAccount, String toAccount, double fromBalance, double toBalance, double amount, Connection con) throws SQLException {
 		String fromSql = "UPDATE bank.account SET balance = ? WHERE account_no = ?";
 		String toSql = "UPDATE bank.account SET balance = ? WHERE account_no =?";	
-		System.out.println("FROM: " + fromAccount + "bal: " + fromBalance);
 		PreparedStatement fromPS = con.prepareStatement(fromSql);
 		fromPS.setDouble(1, fromBalance - amount);
 		fromPS.setString(2, fromAccount);
@@ -104,14 +104,11 @@ public class TransactionDAOImpl implements TransactionDAO {
 	public PendingTransfer approveTransfer(int transferId, Connection con) throws SQLException {
 		PendingTransfer pendingTransfer = null;
 		String updateSql = "UPDATE bank.pending_transfers SET pending = FALSE WHERE transfer_id = ?";
-		String sql = "SELECT * FROM bank.pending_transfers WHERE transfer_id = ?";
-		PreparedStatement ps = con.prepareStatement(updateSql);
+		PreparedStatement ps = con.prepareStatement(updateSql, Statement.RETURN_GENERATED_KEYS);
 		ps.setInt(1, transferId);
 		ps.executeUpdate();
 		
-		PreparedStatement ps1 = con.prepareStatement(sql);
-		ps1.setInt(1, transferId);
-		ResultSet rs = ps1.executeQuery();
+		ResultSet rs = ps.getGeneratedKeys();
 		if(rs.next()) {
 			String fromAccountId = rs.getString("from_account");
 			String toAccountId = rs.getString("to_account");
@@ -120,7 +117,6 @@ public class TransactionDAOImpl implements TransactionDAO {
 			int tId = rs.getInt("transfer_id");
 			pendingTransfer = new PendingTransfer(fromAccountId, toAccountId, amount, pending, tId);
 		}
-		System.out.println("inside impl" + pendingTransfer);
 		return pendingTransfer;
 	}
 

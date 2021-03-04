@@ -1,10 +1,9 @@
 package com.jun.ui;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
-import com.jun.exceptions.CardNotFoundException;
 import com.jun.exceptions.UserNotFoundException;
 import com.jun.model.Account;
 import com.jun.model.TransactionLogs;
@@ -44,7 +43,6 @@ public class CustomerLookupMenu implements Menu {
 			case 2:
 				int sel = 0;
 				do {
-					System.out.println("=== BANK ACCOUNTS ===");
 					try {
 						getCustAccount();
 					} catch (SQLException | UserNotFoundException e) {
@@ -85,28 +83,16 @@ public class CustomerLookupMenu implements Menu {
 	}
 
 	void getCustAccount() throws UserNotFoundException, SQLException {
-		List<String> ids = new ArrayList<>();
-		//TODO: update accountservice to just return all accounts
-		ids = customerService.getCustomerCardNumber(userId);
-		Account acc = null;
-		String accountType = "";
-		StringBuilder sb = new StringBuilder();
-		if (ids.size() > 0) {
-			for (int i = 0; i <= ids.size(); i++) {
-				if (i < ids.size()) {
-					try {
-						acc = accountService.getAccountInfo(ids.get(i), userId);
-						accountType = acc.isCheckingAccount() ? "Checkings" : "Savings  ";
-					} catch (SQLException | CardNotFoundException e) {
-						System.out.println(e.getMessage());
-					}
-					sb.append(accountType + "  -  " + ids.get(i) + "  -  Account Balance: " + acc.getBalance());
-				} else {
-
-				}
-				sb.append(System.getProperty("line.separator"));
-			}
-			System.out.println(sb);
-		}
+		DecimalFormat df = new DecimalFormat();
+		df.setMinimumFractionDigits(2);
+		
+		ArrayList<Account> userAccounts = accountService.getAllUserAccounts(userId);
+		System.out.println("============================= BANK ACCOUNTS =========================================");
+		System.out.println("      ACCOUNT TYPE    ||      ACCOUNT NUMBER      ||        ACCOUNT BALANCE        ||");
+		System.out.println("=====================================================================================");
+		userAccounts.forEach(account -> {
+			String accountType = account.isCheckingAccount() ? "Checkings" : "Savings  ";
+			System.out.println("       " + accountType + "      ||     " + account.getAccountNum() + "     ||            " + df.format(account.getBalance()) + "          ||");
+		});
 	}
 }

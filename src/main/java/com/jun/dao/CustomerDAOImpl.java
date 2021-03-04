@@ -39,7 +39,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return cust;
 	}
 
-	//TODO: probably delete
 	@Override
 	public Customer getCustomerBalance(int userId, Connection con) throws SQLException {
 		Customer cust = null;

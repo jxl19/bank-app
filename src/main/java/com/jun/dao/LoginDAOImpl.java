@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.jun.exceptions.InvalidEmailException;
-import com.jun.exceptions.UserNotFoundException;
 import com.jun.model.Login;
 
 public class LoginDAOImpl implements LoginDAO{
@@ -37,7 +36,6 @@ public class LoginDAOImpl implements LoginDAO{
 	public int createLogin(String username, String password, String email, Connection con) throws InvalidEmailException, SQLException {
 		String sql = "INSERT INTO bank.login (username, email, pass) VALUES (?,?,?)";
 		String getIdSql = "SELECT login_id FROM bank.login WHERE username = ?";
-		System.out.println("createLogin");
 		int loginId = 0;
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, username);
@@ -62,21 +60,18 @@ public class LoginDAOImpl implements LoginDAO{
 	public boolean createUser(boolean isEmployee, int loginId, String firstName, String lastName, Connection con)
 			throws SQLException {
 		String sql = "INSERT INTO bank.users (is_employee, login_id, first_name, last_name) VALUES (?,?,?,?)";
-		System.out.println("createuser");
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setBoolean(1, isEmployee);
 		ps.setInt(2, loginId);
 		ps.setString(3, firstName);
 		ps.setString(4, lastName);
 		ps.executeUpdate();
-		System.out.println("create user here");
 		return true;
 	}
 	
 	@Override
 	public boolean createCustomer(int loginId, int credit, Connection con) throws SQLException {
 		String sql = "INSERT INTO bank.customer (login_id, credit) VALUES (?,?)";
-		System.out.println("createCustomer");
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, loginId);
 		ps.setInt(2, credit);

@@ -34,8 +34,6 @@ public class MainMenu implements Menu {
 					break;
 				case 2:
 					createUserAccount();
-					System.out.println("create account");
-					System.out.println("account successfully created");
 					break;
 				case 3:
 					break;
@@ -71,19 +69,29 @@ public class MainMenu implements Menu {
 	}
 	
 	private void createUserAccount() {
+		boolean invalidEmail = true;
+		String email = "";
 		System.out.println("Please Enter your desired username:");
 		String un = Menu.sc.nextLine();
 		System.out.println("Please Enter your password:");
 		String pw = Menu.sc.nextLine();
+		do {
+			String regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
+			System.out.println("Please enter your email:");
+			email = Menu.sc.nextLine();
+			if (email.matches(regex)) {
+				invalidEmail = false;
+			} else {
+				System.out.println("Email is invalid, please try again");
+			}
+		} while (invalidEmail);
 		System.out.println("Please enter your first name:");
 		String firstName = Menu.sc.nextLine();
 		System.out.println("Please enter your last name:");
 		String lastName = Menu.sc.nextLine();
-		System.out.println("Please enter your email:");
-		String email = Menu.sc.nextLine();
 		try {
 			loginService.createUser(un, pw, firstName, lastName, email, false);
-		} catch (InvalidEmailException  | UserAlreadyExistsException |SQLException e) {
+		} catch (InvalidEmailException  | UserAlreadyExistsException | SQLException e) {
 			System.out.println(e.getMessage());
 		} 
 	}

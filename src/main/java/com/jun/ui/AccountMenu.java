@@ -2,7 +2,7 @@ package com.jun.ui;
 
 import java.sql.SQLException;
 
-import com.jun.exceptions.CardNotFoundException;
+import com.jun.exceptions.AccountNotFoundException;
 import com.jun.services.AccountService;
 import com.jun.services.TransactionService;
 
@@ -23,7 +23,7 @@ public class AccountMenu implements Menu{
 		double balance = 0;
 		try {
 			balance = this.cardService.getAccountInfo(accountId, userId).getBalance();
-		} catch (SQLException | CardNotFoundException e) {
+		} catch (SQLException | AccountNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
 		
@@ -44,17 +44,14 @@ public class AccountMenu implements Menu{
 			System.out.println("user id inside accme" + userId);
 			switch (choice) {
 				case 1: 
-					System.out.println("Deposit menu");
 					TransactionMenu dtm = new TransactionMenu(accountId, "Deposit", balance, userId);
 					dtm.display();
 					break;
 				case 2:
-					System.out.println("Withdraw menu");
 					TransactionMenu wtm = new TransactionMenu(accountId, "Withdraw", balance, userId);
 					wtm.display();
 					break;
 				case 3: 
-					System.out.println("Transfer menu");
 					TransactionMenu ttm = new TransactionMenu(accountId, "Transfer", balance, userId);
 					ttm.display();
 					break;

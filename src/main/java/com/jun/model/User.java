@@ -1,20 +1,17 @@
 package com.jun.model;
 
-//abstract class?
 public class User {
 	private Boolean isAdmin;
 	private int userId;
 	private int loginId;
 	private double balance;
 	
-	//emp
 	public User(Boolean isAdmin, int userId, int loginId) {
 		super();
 		this.isAdmin = isAdmin;
 		this.userId = userId;
 		this.loginId = loginId;
 	}
-	//cust
 	public User(Boolean isAdmin, int userId, int loginId, double balance) {
 		this(isAdmin, userId, loginId);
 		this.balance = balance;

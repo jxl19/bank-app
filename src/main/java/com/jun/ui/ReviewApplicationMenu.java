@@ -26,8 +26,7 @@ public class ReviewApplicationMenu implements Menu {
 			} catch (ApplicationNotFoundException | SQLException e) {
 				System.out.println(e.getMessage());
 			}
-
-			if (ar.getAppId() == prevId) {
+			if (ar == null || ar.getAppId() == prevId) {
 				break a;
 			}
 				System.out.println("=== APPLICATION REVIEW ===");

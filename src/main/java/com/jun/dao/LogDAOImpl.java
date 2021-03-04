@@ -34,8 +34,7 @@ public class LogDAOImpl implements LogDAO {
 
 		while (rs.next()) {
 			int tableId = rs.getInt("table_id");
-			//format this
-			String transactionTime = rs.getString("transaction_time");
+			String transactionTime = rs.getString("transaction_time").split("\\.")[0];
 			String userAction = rs.getString("action");
 			userLogs.add(new TransactionLogs(tableId, transactionTime, userId, userAction));
 		}

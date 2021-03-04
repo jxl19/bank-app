@@ -18,7 +18,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import com.jun.dao.AccountDAO;
-import com.jun.exceptions.CardNotFoundException;
+import com.jun.exceptions.AccountNotFoundException;
 import com.jun.model.Account;
 import com.jun.util.ConnectionUtil;
 
@@ -53,7 +53,7 @@ public class AccountServiceTest {
 	}
 	
 	@Test
-	public void testValidAccount() throws CardNotFoundException, SQLException {
+	public void testValidAccount() throws AccountNotFoundException, SQLException {
 		try (MockedStatic<ConnectionUtil> mockedStatic = Mockito.mockStatic(ConnectionUtil.class)) {
 			mockedStatic.when(ConnectionUtil::getConnection).thenReturn(mockConnection);
 			
@@ -65,8 +65,8 @@ public class AccountServiceTest {
 		}
 	}
 	
-	@Test(expected = CardNotFoundException.class)
-	public void testInvalidAccount() throws CardNotFoundException, SQLException {
+	@Test(expected = AccountNotFoundException.class)
+	public void testInvalidAccount() throws AccountNotFoundException, SQLException {
 		try(MockedStatic<ConnectionUtil> mockedStatic = Mockito.mockStatic(ConnectionUtil.class)) {
 			mockedStatic.when(ConnectionUtil::getConnection).thenReturn(mockConnection);
 			

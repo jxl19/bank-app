@@ -19,7 +19,8 @@ public class ReviewCustomerMenu implements Menu{
 		
 		do {
 			System.out.println("===REVIEW CUSTOMER===");
-			System.out.println("Enter customer id or enter 1 to exit");
+			System.out.println("Enter customer id: ");
+			System.out.println("1.) Exit");
 			
 			try {
 				choice = Integer.parseInt(Menu.sc.nextLine());

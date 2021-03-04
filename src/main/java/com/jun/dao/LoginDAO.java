@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.jun.exceptions.InvalidEmailException;
-import com.jun.exceptions.UserNotFoundException;
 import com.jun.model.Login;
 
 public interface LoginDAO {

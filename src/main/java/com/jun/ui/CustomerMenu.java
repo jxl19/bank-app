@@ -1,22 +1,25 @@
 package com.jun.ui;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
-import com.jun.exceptions.CardNotFoundException;
 import com.jun.exceptions.UserNotFoundException;
+import com.jun.model.Account;
 import com.jun.services.AccountService;
 import com.jun.services.CustomerService;
 
 public class CustomerMenu implements Menu{
 	
 	public CustomerService customerService;
-	public AccountService cardService;
+	public AccountService accountService;
 	public int userId;
 	public CustomerMenu(int userId) {
 		this.customerService = new CustomerService();
-		this.cardService = new AccountService();
+		this.accountService = new AccountService();
 		this.userId = userId;
 	}
 	
@@ -73,44 +76,37 @@ public class CustomerMenu implements Menu{
 	
 	void getCustAccount(int id) throws UserNotFoundException, SQLException {
 		
-		List<String> ids = new ArrayList<>();
-		//TODO: update to just use accountservice
-		ids = customerService.getCustomerCardNumber(id);
-		
 		int choice = 0;
-		double bal = 0;
-		StringBuilder sb = new StringBuilder();
-		sb.append("=== BANK ACCOUNTS===");
-		sb.append(System.getProperty("line.separator"));
-		sb.append("Select a bank account below");
-		sb.append(System.getProperty("line.separator"));
-		for (int i = 0; i <= ids.size(); i++) {
-			if (i < ids.size()) {
-				sb.append(i+1 + ".) " + ids.get(i));
-				try {
-					bal = cardService.getAccountInfo(ids.get(i), userId).getBalance();
-				} catch (SQLException | CardNotFoundException e) {
-					System.out.println(e.getMessage());
-				} 
-				sb.append(" - Account Balance: " + bal);
-			} else sb.append(i+1 + ".) Exit");
-			sb.append(System.getProperty("line.separator"));
-		}
-		System.out.println(sb);
 		
+		DecimalFormat df = new DecimalFormat();
+		df.setMinimumFractionDigits(2);
+		
+		ArrayList<Account> userAccounts = accountService.getAllUserAccounts(userId);
+		int numOfAccounts = userAccounts.size();
+
+		System.out.println("user accounts" + userAccounts);
+		System.out.println("number of accounts" + numOfAccounts);
+		System.out.println("============================= BANK ACCOUNTS =========================================");
+		System.out.println("      ACCOUNT TYPE    ||      ACCOUNT NUMBER      ||        ACCOUNT BALANCE        ||");
+		System.out.println("=====================================================================================");
+		userAccounts.forEach(withCounter((i, account)-> {
+			String accountType = account.isCheckingAccount() ? "Checkings" : "Savings  ";
+			System.out.println(i + ".)     " + accountType + "      ||     " + account.getAccountNum() + "     ||            " + df.format(account.getBalance()) + "         ||");
+		}));
+
 		try { 
 			choice = Integer.parseInt(Menu.sc.nextLine());
 		} catch (NumberFormatException e) {} 
 		
-		if (choice - 1 == ids.size()) {
+		if (choice - 1 == numOfAccounts) {
 			CustomerMenu cm = new CustomerMenu(userId);
 			System.out.println("Exiting..");
 			cm.display();
 		}
 		
-		if (choice <= ids.size() & choice != 0) {
-			System.out.println(ids.get(choice - 1));
-			String acc = ids.get(choice - 1);
+		if (choice <= numOfAccounts & choice != 0) {
+			System.out.println("acount num: " + userAccounts.get(choice - 1).getAccountNum());
+			String acc = userAccounts.get(choice - 1).getAccountNum();
 			AccountMenu am = new AccountMenu(acc, userId);
 			am.display();
 		} else {
@@ -118,5 +114,11 @@ public class CustomerMenu implements Menu{
 			this.getCustAccount(id);
 		}
 
+	}
+	
+	//create counter in foreach
+	private static <T>Consumer<T> withCounter(BiConsumer<Integer, T> consumer) {
+	    AtomicInteger counter = new AtomicInteger(1);
+	    return item -> consumer.accept(counter.getAndIncrement(), item);
 	}
 }

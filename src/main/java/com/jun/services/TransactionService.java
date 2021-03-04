@@ -39,14 +39,8 @@ public class TransactionService {
 			log.warn("User " + userId + "attempted to transfer a negative balance");
 			throw new InvalidBalanceException("You cannot input a negative balance!");
 		}
-		//maybe break up withdraw and deposit
-		int count = 0;
 		try (Connection con = ConnectionUtil.getConnection()) {
 			Transaction transaction = transactionDAO.updateBalance(cardNum, transactionType, amount, con);
-			if (transaction == null) {
-				log.warn("Transfer from " + userId + " would have created a negative balance");
-				throw new InvalidBalanceException("There is not enough balance to withdraw");
-			}
 			log.info(userId + " successfully transffered balance");
 			logDAO.logUserAction(userId,cardNum +" : "+ transactionType + "ing balance " , con);
 			return transaction;
@@ -58,6 +52,7 @@ public class TransactionService {
 			log.warn(userId + "Attempted to transfer to same account");
 			throw new InvalidTransferRequestException("You cannot transfer to yourself!");
 		}
+		System.out.println("transbaltoacc");
 		try (Connection con = ConnectionUtil.getConnection()) {
 			String ret = "";
 			String action = "";
@@ -71,7 +66,9 @@ public class TransactionService {
 			double fromBal = fromAcc.getBalance();
 			double toBal = toAcc.getBalance();
 			int toID = toAcc.getAccountId();
+			
 			if (fromBal < amount) {
+				System.out.println("from: " + fromBal + "amount: " + amount );
 				log.warn("Attempted to transfer an amount more than user "+ userId + " currently has");
 				throw new InvalidBalanceException("You do not have enough in your account to make this transfer");
 			} else {
